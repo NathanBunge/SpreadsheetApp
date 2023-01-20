@@ -1,6 +1,8 @@
 # Cpts321-HWs
 
+Name: Nathan Bunge
 
+ID: 11658843
 
 ## Getting started
 
