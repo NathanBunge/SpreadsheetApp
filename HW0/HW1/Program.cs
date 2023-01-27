@@ -7,16 +7,19 @@ Console.WriteLine("Hello, World!");
 Console.WriteLine("Enter list of numbers seperated by spaces");
 
 
-//get user input
-string i = Console.ReadLine();
+//get user input (can assume correct format
+string input = Console.ReadLine();
 
-//parse string into integers
-string[] vs = i.Split(' ');
+//parse string into words
+string[] words = input.Split(' ');
 
-int[] convertedItems = Array.ConvertAll<string, int>(vs, int.Parse);
+//convert words to integers
+int[] convertedItems = Array.ConvertAll<string, int>(words, int.Parse);
 
-HW1.BST tree = new HW1.BST();
+//create tree
+BST tree = new BST();
 
+//add each number to tree
 foreach (int item in convertedItems)
 {
     Console.WriteLine(item);
