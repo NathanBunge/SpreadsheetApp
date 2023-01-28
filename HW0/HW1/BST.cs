@@ -118,12 +118,12 @@ namespace HW1
             {
                 return 0;
             }
-            return Math.Max(getNumItems(n.Left), getNumItems(n.Right)) + 1;
+            return Math.Max(getNumLevels(n.Left), getNumLevels(n.Right)) + 1;
         }
 
         public static int minLevels(int nodes)
         {
-            return (int)(Math.Ceiling(Math.Log2(nodes + 1)) - 1);
+            return (int)(Math.Ceiling(Math.Log2(nodes + 1)));
         }
     }
 }

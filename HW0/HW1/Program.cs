@@ -22,7 +22,7 @@ BST tree = new BST();
 //add each number to tree
 foreach (int item in convertedItems)
 {
-    Console.WriteLine(item);
+    //Console.WriteLine(item);
     tree.insert(item);
 }
 
