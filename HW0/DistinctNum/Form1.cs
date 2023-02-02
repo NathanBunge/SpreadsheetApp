@@ -42,6 +42,16 @@ namespace DistinctNum
             int numDist = 0;
             
             numDist = Distinct.hashDistinct(list);
+            textBox1.Text = numDist.ToString();
+
+            numDist = Distinct.spaceDistinct(list);
+            textBox1.AppendText(Environment.NewLine);
+            textBox1.AppendText(numDist.ToString());
+
+            numDist = Distinct.sortDistinct(list);
+            textBox1.AppendText(Environment.NewLine);
+            textBox1.AppendText(numDist.ToString());
+
 
         }
 
