@@ -15,6 +15,17 @@ namespace DistinctNum
         public Form1()
         {
             InitializeComponent();
+            RunDistinctIntegers();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private static void RunDistinctIntegers()
+        {
+
         }
     }
 }
