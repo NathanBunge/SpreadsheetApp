@@ -23,9 +23,28 @@ namespace DistinctNum
 
         }
 
-        private static void RunDistinctIntegers()
+        private  void RunDistinctIntegers()
         {
+            Random rnd = new Random();
+            List<int> list = new List<int>();
+
+            for (int i = 0; i < 10000; i++)
+            {
+                int num = rnd.Next(1, 20000);
+                list.Add(num);
+
+            }
+            foreach (int num in list)
+            {
+                Console.WriteLine(num);
+            }
+
+            int numDist = 0;
+            
+            numDist = Distinct.hashDistinct(list);
 
         }
+
+
     }
 }
