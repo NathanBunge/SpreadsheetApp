@@ -18,7 +18,13 @@ namespace TestDistinct
         {
         }
 
-        //get hash distinct
+        /// <summary>
+        /// Tests 5 differnt lists on the hash distinct function to make sure the count is correctly returned.
+        /// <returns> True if passed, flase is failed</returns>
+        /// <param>none</param>
+        /// <exception>None</exception>
+        /// </summary>
+        /// 
         [Test]
         public void TestHashZero()
         {
@@ -47,7 +53,12 @@ namespace TestDistinct
         }
 
 
-        // Testing looping distict
+        /// <summary>
+        /// Tests 5 differnt lists on the Loop distinct function to make sure the count is correctly returned.
+        /// <returns> True if passed, flase is failed</returns>
+        /// <param>none</param>
+        /// <exception>None</exception>
+        /// </summary>
         public void TestLoopZero()
         {
             Assert.AreEqual(Distinct.loopDistinct(l0), 0);
@@ -75,7 +86,12 @@ namespace TestDistinct
         }
 
 
-        // Testing sorting distict
+        /// <summary>
+        /// Tests 5 differnt lists on the sorting distinct function to make sure the count is correctly returned.
+        /// <returns> True if passed, flase is failed</returns>
+        /// <param>none</param>
+        /// <exception>None</exception>
+        /// </summary>
         public void TestSortZero()
         {
             Assert.AreEqual(Distinct.sortDistinct(l0), 0);
