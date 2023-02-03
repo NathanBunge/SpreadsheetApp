@@ -6,8 +6,16 @@ using System.Threading.Tasks;
 
 namespace DistinctNum
 {
+    /// <summary>
+    /// Contains static methods for calculating distinct number of items in a list
+    /// </summary>
     public class Distinct
     {
+        /// <summary>
+        /// Uses a hash table to calculate the number of distinct (unique) items in a list
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns>The count of distinct integers in the list</returns>
         public static int hashDistinct(List<int> list)
         {
             if (list == null)
@@ -27,6 +35,11 @@ namespace DistinctNum
             return hash.Count;
         }
 
+        /// <summary>
+        /// Uses nested loops to calculate the distinct integers in a list.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns>total count of distinct integers</returns>
         public static int loopDistinct(List<int> list)
         {
             if (list == null)
@@ -55,6 +68,11 @@ namespace DistinctNum
             return count;
         }
 
+        /// <summary>
+        /// Sorts a list and then calculate the distinct number of integers in the list
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns>total count of distinct integers</returns>
         public static int sortDistinct(List<int> list)
         {
             if (list == null)

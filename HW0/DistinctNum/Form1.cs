@@ -62,6 +62,8 @@ namespace DistinctNum
             loopCount = Distinct.loopDistinct(list);
             sortCount = Distinct.sortDistinct(list);
 
+
+            //string builder
             sb.Append("1. Hash method");
             sb.Append(Environment.NewLine);
             sb.Append("\t Result: ");
