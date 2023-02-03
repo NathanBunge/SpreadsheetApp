@@ -44,7 +44,7 @@ namespace DistinctNum
             numDist = Distinct.hashDistinct(list);
             textBox1.Text = numDist.ToString();
 
-            numDist = Distinct.spaceDistinct(list);
+            numDist = Distinct.loopDistinct(list);
             textBox1.AppendText(Environment.NewLine);
             textBox1.AppendText(numDist.ToString());
 

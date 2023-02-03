@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DistinctNum
 {
-    internal class Distinct
+    public class Distinct
     {
         public static int hashDistinct(List<int> list)
         {
@@ -27,7 +27,7 @@ namespace DistinctNum
             return hash.Count;
         }
 
-        public static int spaceDistinct(List<int> list)
+        public static int loopDistinct(List<int> list)
         {
             if (list == null)
             {
@@ -66,7 +66,7 @@ namespace DistinctNum
                 return 1;
             }
 
-            int count = 0;
+            int count = 1;
             list.Sort();
             for (int i = 0; i < list.Count-1; i++)
             {
