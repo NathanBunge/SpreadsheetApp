@@ -20,19 +20,22 @@ namespace NotepadApp
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            
         }
 
-        private static void LoadText(TextReader sr)
+        private void LoadText(string pathname)
+        {
+            StreamReader sr = new StreamReader(pathname);
+            LoadText(sr);
+        }
+
+        private void LoadText(TextReader sr)
         {
             string s = "";
             string message = "";
 
-            while(sr != null)
-            {
-                s = sr.ReadLine();
-                message = message + s; 
-            }
+
+            message = sr.ReadToEnd();
 
             fileText.Text = message;
         }
