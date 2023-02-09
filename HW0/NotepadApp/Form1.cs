@@ -42,36 +42,42 @@ namespace NotepadApp
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
+            Stream myStream;
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
 
+            saveFileDialog1.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            saveFileDialog1.FilterIndex = 2;
+            saveFileDialog1.RestoreDirectory = true;
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if ((myStream = saveFileDialog1.OpenFile()) != null)
+                {
+                    Save(myStream);
+                    myStream.Close();
+                }
+            }
         }
 
         private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            Save(getUserFilename(), fileText.Text);
+
         }
 
-        private string getUserFilename()
+        private void Save(Stream s)
         {
-            //string filename = System.Console.ReadLine();
-            string filename = "123.txt";
+            string message = fileText.Text;
+            byte[] byteData = System.Text.Encoding.UTF8.GetBytes(message);
+            s.Write(byteData, 0, byteData.Length);
 
-            return filename;
-        }
-        private void Save(string filename, string message)
-        {
-
-            StreamWriter sw = null;
-            sw = new StreamWriter(filename);
-
-
-            Save(sw, message);
+            s.Dispose();
         }
 
 
-        private void Save(StreamWriter s, string message)
+        private void Save(Stream s, string message)
         {
- 
-            s.WriteLine(message);
+            byte[] byteData = System.Text.Encoding.UTF8.GetBytes(message);
+            s.Write(byteData, 0, byteData.Length);
 
             s.Dispose();
         }
