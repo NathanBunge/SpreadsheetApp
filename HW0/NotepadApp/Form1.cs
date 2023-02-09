@@ -40,7 +40,7 @@ namespace NotepadApp
             fileText.Text = message;
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        private void saveBtn_Click(object sender, EventArgs e)
         {
             Stream myStream;
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
@@ -82,7 +82,7 @@ namespace NotepadApp
             s.Dispose();
         }
 
-        private void toolStripButton2_Click(object sender, EventArgs e)
+        private void loadBtn_Click(object sender, EventArgs e)
         {
             // Create an instance of the open file dialog box.
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
