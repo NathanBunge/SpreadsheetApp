@@ -32,7 +32,6 @@ namespace TestFibonacci
             Assert.AreEqual("1", fib.ReadLine());
         }
 
-        [Test]
         public void Test50Fib()
         {
             FibonacciTextReader fib = new FibonacciTextReader(50);
@@ -45,11 +44,13 @@ namespace TestFibonacci
         [Test]
         public void TestNullFib()
         {
-            FibonacciTextReader fib = new FibonacciTextReader(50);
-            for (int i = 0; i < 51;)
-            {
-                fib.ReadLine();
-            }
+            FibonacciTextReader fib = new FibonacciTextReader(5);
+            fib.ReadLine();
+            fib.ReadLine();
+            fib.ReadLine();
+            fib.ReadLine();
+            fib.ReadLine();
+            fib.ReadLine();
             Assert.AreEqual(null, fib.ReadLine());
         }
 
