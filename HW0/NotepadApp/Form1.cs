@@ -143,12 +143,24 @@ namespace NotepadApp
             }
         }
 
+        /// <summary>
+        /// Gets 50 numbers in fib sequence and sends to form textbox
+        /// Is called when get 50 fib is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            FibonacciTextReader fib = new FibonacciTextReader(500);
+            FibonacciTextReader fib = new FibonacciTextReader(50);
             LoadText(fib);
         }
 
+        /// <summary>
+        /// Gets 100 numbers in fib sequence and sends to form textbox
+        /// Is called when get 100 fib is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             FibonacciTextReader fib = new FibonacciTextReader(100);

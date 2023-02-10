@@ -7,6 +7,9 @@ using System.Windows.Forms;
 
 namespace NotepadApp
 {
+    /// <summary>
+    /// Main program for Form
+    /// </summary>
     internal static class Program
     {
         /// <summary>
