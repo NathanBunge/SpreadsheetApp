@@ -71,7 +71,7 @@
             this.loadBtn.Name = "loadBtn";
             this.loadBtn.Size = new System.Drawing.Size(55, 33);
             this.loadBtn.Text = "Load";
-            this.loadBtn.Click += new System.EventHandler(this.loadBtn_Click);
+            this.loadBtn.Click += new System.EventHandler(this.LoadFileBtn);
             // 
             // fileText
             // 
@@ -91,7 +91,7 @@
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(97, 29);
             this.toolStripButton1.Text = "Get 50 Fib";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.toolStripButton1.Click += new System.EventHandler(this.Load50FibBtn);
             // 
             // toolStripButton2
             // 
@@ -101,7 +101,7 @@
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(107, 29);
             this.toolStripButton2.Text = "Get 100 Fib";
-            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+            this.toolStripButton2.Click += new System.EventHandler(this.Load100FibBtn);
             // 
             // Form1
             // 

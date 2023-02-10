@@ -24,12 +24,13 @@ namespace NotepadApp
 
 
         /// <summary>
-        /// Constructor to set maxLines (number of fib sequence)
+        /// Initializes a new instance of the <see cref="FibonacciTextReader"/> class.
+        /// constructor to set maxLines (number of fib sequence)
         /// </summary>
-        /// <param number of fib numbers to return="maxLines"></param>
+        /// <param name="maxLines"> number of fib numbers to return</param>
         public FibonacciTextReader(int maxLines)
         {
-            max = maxLines;
+            this.max = maxLines;
         }
 
         /// <summary>
@@ -39,37 +40,36 @@ namespace NotepadApp
         /// <returns>one string from fibinachi sequence</returns>
         public override string ReadLine()
         {
-            //if the first time, return 0 and set to 1 iteration
-            if (iter == 0)
+            // if the first time, return 0 and set to 1 iteration
+            if (this.iter == 0)
             {
-                iter = 1;
+                this.iter = 1;
                 return "0";
             }
 
-            //if secont time, set current to one
-            else if (iter == 1)
+            // if secont time, set current to one
+            else if (this.iter == 1)
             {
-                current = 1;
+                this.current = 1;
             }
 
-            //if last time, return null
-            if (iter == max)
+            // if last time, return null
+            if (this.iter == this.max)
             {
                 return null;
             }
 
-            //get number
-            BigInteger next = current + last;
-            last = current;
-            current = next;
+            // get number
+            BigInteger next = this.current + this.last;
+            this.last = this.current;
+            this.current = next;
 
-            //increment iteration
-            iter++;
+            // increment iteration
+            this.iter++;
 
-            //return number
-            return current.ToString();
+            // return number
+            return this.current.ToString();
 
-            //return base.ReadLine();
         }
 
         /// <summary>
@@ -83,17 +83,16 @@ namespace NotepadApp
 
             string m = "";
 
-            m = ReadLine();
+            m = this.ReadLine();
 
             while (m != null)
             {
                 str.Append(m);
                 str.Append(Environment.NewLine);
-                m = ReadLine();
+                m = this.ReadLine();
             }
             return str.ToString();
 
-            //return base.ReadToEnd();
         }
     }
 }

@@ -15,48 +15,46 @@ namespace NotepadApp
     {
         public Form1()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            LoadText("test.txt");
+            this.LoadText("test.txt");
         }
 
         /// <summary>
         /// Loads text from a file with a given pathname
         /// </summary>
-        /// <param path to file to load="pathname"></param>
+        /// <param name="pathname">pathnae to the input file</param>
         private void LoadText(string pathname)
         {
             StreamReader sr = new StreamReader(pathname);
-            LoadText(sr);
+            this.LoadText(sr);
         }
 
 
         /// <summary>
         /// loads the text from a given text streams and displays it to the main form
         /// </summary>
-        /// <param TextStreamReader="sr"></param>
-        /// <returns>None</returns>
+        /// <param name="sr">textreadr object</param>
         private void LoadText(TextReader sr)
         {
-            string s = "";
-            string message = "";
+            string s = string.Empty;
+            string message = string.Empty;
 
 
             message = sr.ReadToEnd();
 
-            fileText.Text = message;
+            this.fileText.Text = message;
         }
 
         /// <summary>
         /// Save the text in the current form to a file of the user's choice.
         /// Is run when "save" button is clicked
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// <returns>none</returns>
+        /// <param name="sender">sender</param>
+        /// <param name="e">event</param>
         private void saveBtn_Click(object sender, EventArgs e)
         {
             //---from miscrosoft documentaion: https://learn.microsoft.com
@@ -99,9 +97,8 @@ namespace NotepadApp
         /// <summary>
         /// Save text from a given message to a file
         /// </summary>
-        /// <param file to save to="s"></param>
-        /// <param text to be saved="message"></param>
-        /// <returns>None</returns>
+        /// <param name="s">file to save to</param>
+        /// <param name="message">text to be saved</param>
         private void Save(Stream s, string message)
         {
             byte[] byteData = System.Text.Encoding.UTF8.GetBytes(message);
@@ -113,10 +110,9 @@ namespace NotepadApp
         /// <summary>
         /// Loads text from a file and displays to form when "load" button is clicked
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// <returns>none</returns>
-        private void loadBtn_Click(object sender, EventArgs e)
+        /// <param name="sender">the sender</param>
+        /// <param name="e">event</param>
+        private void LoadFileBtn(object sender, EventArgs e)
         {
             //---from miscrosoft documentaion: https://learn.microsoft.com
 
@@ -147,24 +143,24 @@ namespace NotepadApp
         /// Gets 50 numbers in fib sequence and sends to form textbox
         /// Is called when get 50 fib is pressed
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        /// <param name="sender">senter</param>
+        /// <param name="e">event</param>
+        private void Load50FibBtn(object sender, EventArgs e)
         {
             FibonacciTextReader fib = new FibonacciTextReader(50);
-            LoadText(fib);
+            this.LoadText(fib);
         }
 
         /// <summary>
         /// Gets 100 numbers in fib sequence and sends to form textbox
         /// Is called when get 100 fib is pressed
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void toolStripButton2_Click(object sender, EventArgs e)
+        /// <param name="sender">sender</param>
+        /// <param name="e">event</param>
+        private void Load100FibBtn(object sender, EventArgs e)
         {
             FibonacciTextReader fib = new FibonacciTextReader(100);
-            LoadText(fib);
+            this.LoadText(fib);
         }
     }
 }
