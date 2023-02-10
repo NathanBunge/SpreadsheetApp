@@ -44,7 +44,7 @@
             this.loadBtn});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(800, 34);
+            this.toolStrip1.Size = new System.Drawing.Size(800, 38);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             this.toolStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolStrip1_ItemClicked);
@@ -55,7 +55,7 @@
             this.saveBtn.Image = ((System.Drawing.Image)(resources.GetObject("saveBtn.Image")));
             this.saveBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveBtn.Name = "saveBtn";
-            this.saveBtn.Size = new System.Drawing.Size(53, 29);
+            this.saveBtn.Size = new System.Drawing.Size(53, 33);
             this.saveBtn.Text = "Save";
             this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
             // 
@@ -72,10 +72,10 @@
             // fileText
             // 
             this.fileText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.fileText.Location = new System.Drawing.Point(0, 34);
+            this.fileText.Location = new System.Drawing.Point(0, 38);
             this.fileText.Multiline = true;
             this.fileText.Name = "fileText";
-            this.fileText.Size = new System.Drawing.Size(800, 416);
+            this.fileText.Size = new System.Drawing.Size(800, 412);
             this.fileText.TabIndex = 0;
             // 
             // Form1

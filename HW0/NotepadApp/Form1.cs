@@ -23,12 +23,22 @@ namespace NotepadApp
             LoadText("test.txt");
         }
 
+        /// <summary>
+        /// Loads text from a file with a given pathname
+        /// </summary>
+        /// <param path to file to load="pathname"></param>
         private void LoadText(string pathname)
         {
             StreamReader sr = new StreamReader(pathname);
             LoadText(sr);
         }
 
+
+        /// <summary>
+        /// loads the text from a given text streams and displays it to the main form
+        /// </summary>
+        /// <param TextStreamReader="sr"></param>
+        /// <returns>None</returns>
         private void LoadText(TextReader sr)
         {
             string s = "";
@@ -40,8 +50,17 @@ namespace NotepadApp
             fileText.Text = message;
         }
 
+        /// <summary>
+        /// Save the text in the current form to a file of the user's choice.
+        /// Is run when "save" button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <returns>none</returns>
         private void saveBtn_Click(object sender, EventArgs e)
         {
+            //---from miscrosoft documentaion: https://learn.microsoft.com
+
             Stream myStream;
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
 
@@ -64,6 +83,10 @@ namespace NotepadApp
 
         }
 
+        /// <summary>
+        /// Save text from the Form to a file
+        /// </summary>
+        /// <param File to be saved to="s"></param>
         private void Save(Stream s)
         {
             string message = fileText.Text;
@@ -73,7 +96,12 @@ namespace NotepadApp
             s.Dispose();
         }
 
-
+        /// <summary>
+        /// Save text from a given message to a file
+        /// </summary>
+        /// <param file to save to="s"></param>
+        /// <param text to be saved="message"></param>
+        /// <returns>None</returns>
         private void Save(Stream s, string message)
         {
             byte[] byteData = System.Text.Encoding.UTF8.GetBytes(message);
@@ -82,8 +110,16 @@ namespace NotepadApp
             s.Dispose();
         }
 
+        /// <summary>
+        /// Loads text from a file and displays to form when "load" button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <returns>none</returns>
         private void loadBtn_Click(object sender, EventArgs e)
         {
+            //---from miscrosoft documentaion: https://learn.microsoft.com
+
             // Create an instance of the open file dialog box.
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
 
