@@ -142,5 +142,17 @@ namespace NotepadApp
                 fileStream.Close();
             }
         }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            FibonacciTextReader fib = new FibonacciTextReader(500);
+            LoadText(fib);
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            FibonacciTextReader fib = new FibonacciTextReader(100);
+            LoadText(fib);
+        }
     }
 }
