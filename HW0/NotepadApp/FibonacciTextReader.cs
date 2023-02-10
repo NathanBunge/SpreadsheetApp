@@ -66,12 +66,6 @@ namespace NotepadApp
 
             // get number
             BigInteger next = this.current + this.last;
-            if(iter == 1)
-            {
-                Console.WriteLine(this.current.ToString());
-                Console.WriteLine(this.last.ToString());
-                Console.WriteLine(next.ToString());
-            }
             this.last = this.current;
             this.current = next;
 
