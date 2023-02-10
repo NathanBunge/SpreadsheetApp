@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("TestFibonacci")]
 
 namespace NotepadApp
 {
