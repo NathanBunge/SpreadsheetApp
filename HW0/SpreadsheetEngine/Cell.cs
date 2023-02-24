@@ -15,7 +15,7 @@ namespace SpreadsheetEngine
         private int RowIndex { get; }
         private int ColumnIndex { get; }
 
-        private String Text {
+        protected internal  String Text {
             get { return Text; }
 
             set { if (value == Text) { return; }
@@ -26,9 +26,9 @@ namespace SpreadsheetEngine
             }
         }
 
-        private int Value
+        protected internal String Value
         {
-            get { return Value; }
+            private get { return Value; }
 
             set { if (value == Value) { return; }
             Value = value;
