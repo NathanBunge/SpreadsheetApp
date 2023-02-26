@@ -7,11 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SpreadsheetEngine;
 
 namespace Spreadsheet_Nathan_Bunge
 {
     public partial class Form1 : Form
     {
+        private Spreadsheet sheet;
         public Form1()
         {
             InitializeComponent();
@@ -20,13 +22,17 @@ namespace Spreadsheet_Nathan_Bunge
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            //gaurentee
+            //guarentee
+            //apparently
         }
 
         internal void InitializeDataGrid()
         {
             spreadsheetGrid.Rows.Clear();
             spreadsheetGrid.Columns.Clear();
+
+            this.sheet = new Spreadsheet(25,50);
 
 
 
@@ -59,11 +65,32 @@ namespace Spreadsheet_Nathan_Bunge
                 row.HeaderCell.Value = String.Format("{0}", row.Index + 1);
             }
 
-                
+
+
+            sheet.CellPropertyChanged += Sheet_CellPropertyChanged;
 
 
 
+        }
 
+        private void Sheet_CellPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "CellChanged")
+            {
+                //sender is cell (i think)
+                Cell cell = (Cell)sender;
+                int row = cell.RowIndex;
+                int col = cell.ColumnIndex;
+
+                spreadsheetGrid.Rows[row].Cells[col].Value = cell.Value;
+            }
+           // throw new NotImplementedException();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Cell s = (Cell) this.sheet.getCell(2, 3);
+            s.Text = "Sicko mode";
         }
     }
 }

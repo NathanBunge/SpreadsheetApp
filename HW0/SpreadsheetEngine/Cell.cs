@@ -4,35 +4,61 @@ namespace SpreadsheetEngine
 {
     public abstract class Cell : INotifyPropertyChanged
     {
+        protected int rowIndex;
+        protected int columnIndex;
+
+
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
         public Cell(int row, int col)
         {
-            RowIndex = row;
-            ColumnIndex = col;
+            this.rowIndex = row;
+            this.columnIndex = col;
+
+            this.text = string.Empty;
+            this.value = string.Empty;
         }
+
+
+
         
+        public int RowIndex
+        {
+            get
+            { return this.rowIndex; }
+        }
 
-        private int RowIndex { get; }
-        private int ColumnIndex { get; }
+        public int ColumnIndex
+        {
+            get
+            { return this.columnIndex; }
+        }
 
-        protected internal  String Text {
-            get { return Text; }
+        protected string text;
 
-            set { if (value == Text) { return; }
-                Text = value;
+        public string Text {
+            get { return this.text; }
+
+            set { if (value == this.text) { return; }
+                this.text = value;
 
                 //notify listeners
                 PropertyChanged(this, new PropertyChangedEventArgs("Text"));
             }
         }
 
-        protected internal String Value
-        {
-            private get { return Value; }
+        protected string value;
 
-            set { if (value == Value) { return; }
-            Value = value;
-            PropertyChangedEventArgs e = new PropertyChangedEventArgs("Value");}
+        public string Value
+        {
+            get { return this.value; }
+        
+            internal set
+            {
+                if (value == this.value) { return; }
+                this.value = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("Value"));
+
+            }
         }
     }
 }

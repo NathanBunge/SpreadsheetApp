@@ -21,12 +21,23 @@ namespace SpreadsheetEngine
         private int RowCount { get; set; }
         private int ColCount { get; set; } = 0;
 
-        List<List<RealCell>> cellSheet = new List<List<RealCell>>();
+        //List<List<RealCell>> cellSheet = new List<List<RealCell>>();
         //RealCell[][] sheet = new RealCell;
+        RealCell[,] cellSheet;
+
+
+        public Spreadsheet()
+        {
+            Console.WriteLine("Made object");
+        }
 
         public Spreadsheet(int rows, int cols)
         {
+            this.RowCount = rows;
+            this.ColCount = cols;
             
+            this.cellSheet = new RealCell[rows,cols];
+
 
             //populate 2D array with cells and labels
             for (int i = 0; i < rows; i++)
@@ -35,14 +46,14 @@ namespace SpreadsheetEngine
                 {
                     RealCell c = new RealCell(i, j);
                     c.PropertyChanged += Cell_PropertyChanged;
-                    cellSheet[i][j] = c;
+                    cellSheet[i,j] = c;
 
                 }
             }
         
         }
 
-        private void Cell_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        private void Cell_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {   
             
             // this will update the value of a cell when it see's that text is changed
@@ -60,15 +71,18 @@ namespace SpreadsheetEngine
 
                 
             }
-            
-            throw new NotImplementedException();
+
+            //notify listeners
+            CellPropertyChanged(sender, new PropertyChangedEventArgs("CellChanged"));
+
+            //throw new NotImplementedException();
         }
 
         public event PropertyChangedEventHandler CellPropertyChanged = delegate { };
 
-        internal Cell getCell(int row, int col)
+        public Cell getCell(int row, int col)
         {
-            return cellSheet[row][col];
+            return cellSheet[row,col];
         }
 
 
