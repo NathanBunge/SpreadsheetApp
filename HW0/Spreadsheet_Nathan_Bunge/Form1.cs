@@ -1,42 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using SpreadsheetEngine;
+﻿// <copyright file="Form1.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Spreadsheet_Nathan_Bunge
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Drawing;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+    using SpreadsheetEngine;
+
+    /// <summary>
+    /// fasdfa.
+    /// </summary>
     public partial class Form1 : Form
     {
         private Spreadsheet sheet;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Form1"/> class.
+        /// Documented.
+        /// </summary>
         public Form1()
         {
-            InitializeComponent();
-            InitializeDataGrid();
+            this.InitializeComponent();
+            this.InitializeDataGrid();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            //gaurentee
-            //guarentee
-            //apparently
-        }
-
+        /// <summary>
+        /// create data grid.
+        /// </summary>
         internal void InitializeDataGrid()
         {
-            spreadsheetGrid.Rows.Clear();
-            spreadsheetGrid.Columns.Clear();
+            this.spreadsheetGrid.Rows.Clear();
+            this.spreadsheetGrid.Columns.Clear();
 
-            this.sheet = new Spreadsheet(25,50);
+            this.sheet = new Spreadsheet(50, 25);
 
-
-
-            // Add 26 columns 
+            // Add 26 columns
             StringBuilder sb = new StringBuilder("col");
             for (char c = 'A'; c <= 'Z'; c++)
             {
@@ -44,53 +50,73 @@ namespace Spreadsheet_Nathan_Bunge
                 sb.Append(c);
 
                 // create colum
-                spreadsheetGrid.Columns.Add(sb.ToString(), c.ToString());
+                this.spreadsheetGrid.Columns.Add(sb.ToString(), c.ToString());
 
                 // delte last charater
                 sb.Length = sb.Length - 1;
             }
 
             // add 50 rows
-            for (int i = 1; i<=50; i++)
+            for (int i = 1; i <= 50; i++)
             {
                 // add row
-                spreadsheetGrid.Rows.Add();
-
+                this.spreadsheetGrid.Rows.Add();
             }
 
             // label rows
             // got from :(https://stackoverflow.com/questions/9581626/show-row-number-in-row-header-of-a-datagridview)
-            foreach (DataGridViewRow row in spreadsheetGrid.Rows)
+            foreach (DataGridViewRow row in this.spreadsheetGrid.Rows)
             {
-                row.HeaderCell.Value = String.Format("{0}", row.Index + 1);
+                row.HeaderCell.Value = string.Format("{0}", row.Index + 1);
             }
 
+            this.sheet.CellPropertyChanged += this.Sheet_CellPropertyChanged;
+        }
 
-
-            sheet.CellPropertyChanged += Sheet_CellPropertyChanged;
-
-
-
+        private void Form1_Load(object sender, EventArgs e)
+        {
         }
 
         private void Sheet_CellPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "CellChanged")
             {
-                //sender is cell (i think)
+                // sender is cell (i think)
                 Cell cell = (Cell)sender;
                 int row = cell.RowIndex;
                 int col = cell.ColumnIndex;
 
-                spreadsheetGrid.Rows[row].Cells[col].Value = cell.Value;
+                this.spreadsheetGrid.Rows[row].Cells[col].Value = cell.Value;
             }
-           // throw new NotImplementedException();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
-            Cell s = (Cell) this.sheet.getCell(2, 3);
-            s.Text = "Sicko mode";
+            // Define cell to save reference to
+            Cell s = (Cell)this.sheet.GetCell(0, 0);
+
+            // Set 50 randome cells
+            Random randome = new Random(50);
+            for (int i = 1; i < 50; i++)
+            {
+                s = this.sheet.GetCell(randome.Next(0, 50), randome.Next(0, 25));
+
+                s.Text = "Sicko mode";
+            }
+
+            // Set all cells in column B
+            for (int i = 1; i < 50; i++)
+            {
+                s = (Cell)this.sheet.GetCell(i, 1);
+                s.Text = "This is cell B" + i.ToString();
+            }
+
+            // Set all cells in column A
+            for (int i = 1; i < 50; i++)
+            {
+                s = (Cell)this.sheet.GetCell(i, 0);
+                s.Text = "=B" + i.ToString();
+            }
         }
     }
 }
