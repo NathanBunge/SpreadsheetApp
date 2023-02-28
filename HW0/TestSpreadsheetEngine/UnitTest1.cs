@@ -6,10 +6,7 @@ namespace TestSpreadsheetEngine
 {
     public class Tests
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
+
 
         [Test]
         public void TestRowCount()
@@ -39,7 +36,7 @@ namespace TestSpreadsheetEngine
         public void TestRowIndexOut()
         {
             Spreadsheet spread = new Spreadsheet(5, 5);
-            Assert.Throws<IndexOutOfRangeException>(() => spread.GetCell(5,5));
+            Assert.Throws<IndexOutOfRangeException>(() => spread.GetCell(5,4));
 
         }
 
@@ -48,7 +45,7 @@ namespace TestSpreadsheetEngine
         public void TestColCount()
         {
             Spreadsheet spread = new Spreadsheet(5, 5);
-            Assert.AreEqual(5, spread.RowCount);
+            Assert.AreEqual(5, spread.ColCount);
         }
 
         [Test]
@@ -56,7 +53,7 @@ namespace TestSpreadsheetEngine
         {
             Spreadsheet spread = new Spreadsheet(5, 5);
             Cell s = spread.GetCell(2, 2);
-            Assert.AreEqual(2, s.RowIndex);
+            Assert.AreEqual(2, s.ColumnIndex);
         }
 
         [Test]
@@ -64,7 +61,7 @@ namespace TestSpreadsheetEngine
         {
             Spreadsheet spread = new Spreadsheet(5, 5);
             Cell s = spread.GetCell(4, 4);
-            Assert.AreEqual(4, s.RowIndex);
+            Assert.AreEqual(4, s.ColumnIndex);
         }
 
 
@@ -72,8 +69,7 @@ namespace TestSpreadsheetEngine
         public void TestColIndexOut()
         {
             Spreadsheet spread = new Spreadsheet(5, 5);
-            //Assert.Catch( (spread.GetCell(5, 5));
-            Assert.Throws<IndexOutOfRangeException>(() => spread.GetCell(5, 5));
+            Assert.Throws<IndexOutOfRangeException>(() => spread.GetCell(4, 5));
 
         }
 
