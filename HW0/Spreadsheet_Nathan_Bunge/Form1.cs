@@ -117,7 +117,7 @@ namespace Spreadsheet_Nathan_Bunge
             }
 
             // Set all cells in column A
-            for (int i = 1; i < 50; i++)
+            for (int i = 0; i < 50; i++)
             {
                 s = (Cell)this.sheet.GetCell(i, 0);
                 s.Text = "=B" + (i + 1).ToString();
