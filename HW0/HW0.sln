@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spreadsheet_Nathan_Bunge", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpreadsheetEngine", "SpreadsheetEngine\SpreadsheetEngine.csproj", "{F799288F-CF3C-4315-81A2-BAACF6022459}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSpreadsheetEngine", "TestSpreadsheetEngine\TestSpreadsheetEngine.csproj", "{912C897E-3CB9-41D9-B9A0-B36FF93CEE8C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F799288F-CF3C-4315-81A2-BAACF6022459}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F799288F-CF3C-4315-81A2-BAACF6022459}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F799288F-CF3C-4315-81A2-BAACF6022459}.Release|Any CPU.Build.0 = Release|Any CPU
+		{912C897E-3CB9-41D9-B9A0-B36FF93CEE8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{912C897E-3CB9-41D9-B9A0-B36FF93CEE8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{912C897E-3CB9-41D9-B9A0-B36FF93CEE8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{912C897E-3CB9-41D9-B9A0-B36FF93CEE8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

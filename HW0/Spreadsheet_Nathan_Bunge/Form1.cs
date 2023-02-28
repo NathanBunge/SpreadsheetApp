@@ -16,7 +16,7 @@ namespace Spreadsheet_Nathan_Bunge
     using SpreadsheetEngine;
 
     /// <summary>
-    /// fasdfa.
+    /// Main Form.
     /// </summary>
     public partial class Form1 : Form
     {
@@ -90,6 +90,11 @@ namespace Spreadsheet_Nathan_Bunge
             }
         }
 
+        /// <summary>
+        /// Generates test values for demo.
+        /// </summary>
+        /// <param name="sender">sender.</param>
+        /// <param name="e">event.</param>
         private void Button1_Click(object sender, EventArgs e)
         {
             // Define cell to save reference to
@@ -97,7 +102,7 @@ namespace Spreadsheet_Nathan_Bunge
 
             // Set 50 randome cells
             Random randome = new Random(50);
-            for (int i = 1; i < 50; i++)
+            for (int i = 0; i < 50; i++)
             {
                 s = this.sheet.GetCell(randome.Next(0, 50), randome.Next(0, 25));
 
@@ -105,17 +110,17 @@ namespace Spreadsheet_Nathan_Bunge
             }
 
             // Set all cells in column B
-            for (int i = 1; i < 50; i++)
+            for (int i = 0; i < 50; i++)
             {
                 s = (Cell)this.sheet.GetCell(i, 1);
-                s.Text = "This is cell B" + i.ToString();
+                s.Text = "This is cell B" + (i + 1).ToString();
             }
 
             // Set all cells in column A
             for (int i = 1; i < 50; i++)
             {
                 s = (Cell)this.sheet.GetCell(i, 0);
-                s.Text = "=B" + i.ToString();
+                s.Text = "=B" + (i + 1).ToString();
             }
         }
     }

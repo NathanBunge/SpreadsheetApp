@@ -17,17 +17,19 @@ namespace SpreadsheetEngine
     public class Spreadsheet
     {
         private RealCell[,] cellSheet;
+        private int rowCount;
+        private int colCount;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Spreadsheet"/> class.
-        /// TODO.
+        /// Speadsheet.
         /// </summary>
         /// <param name="rows">number of rows.</param>
         /// <param name="cols">number of columns.</param>
         public Spreadsheet(int rows, int cols)
         {
-            this.RowCount = rows;
-            this.ColCount = cols;
+            this.rowCount = rows;
+            this.colCount = cols;
             this.cellSheet = new RealCell[rows, cols];
 
             // populate 2D array with cells and labels
@@ -47,9 +49,23 @@ namespace SpreadsheetEngine
         /// </summary>
         public event PropertyChangedEventHandler CellPropertyChanged = (sender, e) => { };
 
-        private int RowCount { get; set; }
 
-        private int ColCount { get; set; } = 0;
+
+        /// <summary>
+        /// Gets count of rows.
+        /// </summary>
+        public int RowCount
+        {
+            get { return this.rowCount; }
+        }
+
+        /// <summary>
+        /// Gets count of  columns.
+        /// </summary>
+        public int ColCount
+        {
+            get { return this.colCount; }
+        }
 
         /// <summary>
         /// Constructor.
@@ -59,6 +75,16 @@ namespace SpreadsheetEngine
         /// <returns>returns a cell.</returns>
         public Cell GetCell(int row, int col)
         {
+            if (row > this.RowCount || row < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(row));
+            }
+
+            if (col > this.ColCount || row < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(row));
+            }
+
             return this.cellSheet[row, col];
         }
 
