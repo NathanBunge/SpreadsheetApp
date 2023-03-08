@@ -49,8 +49,6 @@ namespace SpreadsheetEngine
         /// </summary>
         public event PropertyChangedEventHandler CellPropertyChanged = (sender, e) => { };
 
-
-
         /// <summary>
         /// Gets count of rows.
         /// </summary>
@@ -107,7 +105,7 @@ namespace SpreadsheetEngine
                     int rowIndex = rowName - '0';
 
                     // set value of cell to text of referenced cell
-                    cell.Value = this.cellSheet[rowIndex-1, colIndex-1].Text;
+                    cell.Value = this.cellSheet[rowIndex - 1, colIndex - 1].Text;
                 }
                 else
                 {
