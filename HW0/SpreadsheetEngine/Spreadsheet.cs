@@ -33,13 +33,13 @@ namespace SpreadsheetEngine
             this.cellSheet = new RealCell[rows, cols];
 
             // populate 2D array with cells and labels
-            for (int i = 0; i < rows; i++)
+            for (int row = 0; row < rows; row++)
             {
-                for (int j = 0; j < cols; j++)
+                for (int col = 0; col < cols; col++)
                 {
-                    RealCell c = new RealCell(i, j);
+                    RealCell c = new RealCell(row, col);
                     c.PropertyChanged += this.Cell_PropertyChanged;
-                    this.cellSheet[i, j] = c;
+                    this.cellSheet[row, col] = c;
                 }
             }
         }
@@ -48,8 +48,6 @@ namespace SpreadsheetEngine
         /// Cell changed event.
         /// </summary>
         public event PropertyChangedEventHandler CellPropertyChanged = (sender, e) => { };
-
-
 
         /// <summary>
         /// Gets count of rows.
@@ -96,7 +94,18 @@ namespace SpreadsheetEngine
                 Cell cell = (Cell)sender;
                 if (cell.Text.First() == '=')
                 {
-                    cell.Value = cell.Text.Substring(1);
+                    // cell.Value = cell.Text.Substring(1);
+                    char colName = cell.Text[1];
+                    char rowName = cell.Text[2];
+
+                    // convert colname to a integer
+                    int colIndex = char.ToUpper(colName) - 64;
+
+                    // convert rowname to integer
+                    int rowIndex = rowName - '0';
+
+                    // set value of cell to text of referenced cell
+                    cell.Value = this.cellSheet[rowIndex - 1, colIndex - 1].Text;
                 }
                 else
                 {
