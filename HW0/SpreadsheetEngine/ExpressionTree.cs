@@ -19,7 +19,42 @@ namespace SpreadsheetEngine
 
         private ExpressionNode Compile(string expression)
         {
-            throw new NotImplementedException();
+            // Since we assume ony one oporator at a time, we can just go left to right
+
+            // Return Numeric node if just a vallue
+            if (double.TryParse(expression, out double value))
+            {
+                return new NumericNode(value);
+            }
+
+            string leftside = expression.Substring(0,1);
+            string rightside = expression.Substring(2);
+
+            char op = expression[1];
+
+
+            if (op == '+')
+            {
+                return new AddOperatorNode(Compile(leftside), Compile(rightside));
+            }
+
+            if (op == '-')
+            {
+                return new AddOperatorNode(Compile(leftside), Compile(rightside));
+            }
+
+            if (op == '*')
+            {
+                return new AddOperatorNode(Compile(leftside), Compile(rightside));
+            }
+
+            if (op == '/')
+            {
+                return new AddOperatorNode(Compile(leftside), Compile(rightside));
+            }
+
+            // invalid oporaters
+            throw new ArgumentException("Invalid operator: " + expression[1]);
         }
 
         public void SetVariable(string variableName, double variableValue)
@@ -30,8 +65,7 @@ namespace SpreadsheetEngine
         public double Evaluate()
         {
 
-            // eval root node
-            return 0;
+            return this._root.Evaluate();
         }
 
         // since nodes don't exist outside the tree, we define them here
