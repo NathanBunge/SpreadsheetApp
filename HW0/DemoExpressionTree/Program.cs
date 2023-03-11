@@ -57,6 +57,7 @@ internal static class ExpressionDemo
 
         void createNewTree()
         {
+            Console.WriteLine("Enter new expression: ");
             eTree = new ExpressionTree(Console.ReadLine());
         }
 
@@ -67,6 +68,7 @@ internal static class ExpressionDemo
 
             Console.WriteLine("Enter Variable Value:");
             double vValue = double.Parse(Console.ReadLine());
+
             eTree.SetVariable(vName, vValue);
         }
 
