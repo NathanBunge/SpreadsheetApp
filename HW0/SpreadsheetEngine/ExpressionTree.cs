@@ -12,7 +12,7 @@
     public class ExpressionTree
     {
         private readonly ExpressionNode root;
-        private Dictionary<string, double> variableDict = new Dictionary<string, double>();
+        private static Dictionary<string, double> variableDict = new Dictionary<string, double>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpressionTree"/> class.
@@ -24,6 +24,47 @@
             this.root = this.Compile(expression);
         }
 
+
+        /// <summary>
+        /// Check is sting is alphanumeric. Maybe take this outside class.
+        /// </summary>
+        /// <param name="str">expression to check.</param>
+        /// <returns>true if is all letters or numbrs.</returns>
+        public static bool IsAllAlphaNumeric(string str)
+        {
+            foreach (char c in str)
+            {
+                if (!char.IsLetterOrDigit(c))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Finds index of oporator. May take this outside class.
+        /// </summary>
+        /// <param name="str">expression string.</param>
+        /// <returns>Index of oporator.</returns>
+        public static int FindOperatorIndex(string str)
+        {
+            char[] operators = { '+', '-', '*', '/' };
+            int index = -1;
+            foreach (char op in operators)
+            {
+                int i = str.IndexOf(op);
+                if (i >= 0 && (index == -1 || i < index))
+                {
+                    index = i;
+                }
+            }
+
+            return index;
+        }
+
+
         /// <summary>
         /// sets variable name, adding to dict.
         /// </summary>
@@ -31,7 +72,7 @@
         /// <param name="variableValue">value of variable to set.</param>
         public void SetVariable(string variableName, double variableValue)
         {
-            this.variableDict.Add(variableName, variableValue);
+            variableDict[variableName] = variableValue;
         }
 
         /// <summary>
@@ -43,6 +84,8 @@
             return this.root.Evaluate();
         }
 
+
+
         private ExpressionNode Compile(string expression)
         {
             // Since we assume ony one oporator at a time, we can just go left to right
@@ -53,13 +96,22 @@
                 return new NumericNode(value);
             }
 
-            // If states with a letter, lookup in dictionary
-            // TODO: 
+            // If starts with letter, check if just variable
+            if (char.IsLetter(expression[0]))
+            {
+                // If only alphanumeric, its a variable
+                if (IsAllAlphaNumeric(expression))
+                {
+                    return new VariableNode(expression);
+                }
+            }
+            // Find first instance of oporation
+            int opIndex = FindOperatorIndex(expression);
+            char op = expression[opIndex];
 
-            string leftside = expression.Substring(0,1);
-            string rightside = expression.Substring(2);
-
-            char op = expression[1];
+            //create left and rights sides
+            string leftside = expression.Substring(0, opIndex);
+            string rightside = expression.Substring(opIndex+1);
 
             if (op == '+')
             {
@@ -68,17 +120,17 @@
 
             if (op == '-')
             {
-                return new AddOperatorNode(this.Compile(leftside), this.Compile(rightside));
+                return new SubtractOperatorNode(this.Compile(leftside), this.Compile(rightside));
             }
 
             if (op == '*')
             {
-                return new AddOperatorNode(this.Compile(leftside), this.Compile(rightside));
+                return new MultiplyOperatorNode(this.Compile(leftside), this.Compile(rightside));
             }
 
             if (op == '/')
             {
-                return new AddOperatorNode(this.Compile(leftside), this.Compile(rightside));
+                return new DivideOperatorNode(this.Compile(leftside), this.Compile(rightside));
             }
 
             // invalid oporaters
@@ -123,6 +175,44 @@
             public override double Evaluate()
             {
                 return this.value;
+            }
+        }
+
+        /// <summary>
+        /// Subclass for nodes with basic numbers.
+        /// </summary>
+        public class VariableNode : ExpressionNode
+        {
+            private string variableName;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="VariableNode"/> class.
+            /// Constructor with vallue.
+            /// </summary>
+            /// <param name="value">name of variable.</param>
+            public VariableNode(string value)
+            {
+                this.variableName = value;
+            }
+
+            /// <summary>
+            /// return the value of the node.
+            /// </summary>
+            /// <returns>numerical value.</returns>
+            public override double Evaluate()
+            {
+                // if variable is in dictionary, return the value.
+                if (variableDict.ContainsKey(this.variableName))
+                {
+                    return variableDict[this.variableName];
+                }
+
+                // else return error.
+                else
+                {
+                    throw new KeyNotFoundException("Undefined variable: " + this.variableName);
+                }
+
             }
         }
 
@@ -242,5 +332,6 @@
                 return this.Left.Evaluate() / this.Right.Evaluate();
             }
         }
+
     }
 }
