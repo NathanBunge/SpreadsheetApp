@@ -1,6 +1,7 @@
-﻿
+﻿using SpreadsheetEngine;
 internal static class ExpressionDemo
 {
+   
     static void DisplayMenu()
     {
         Console.WriteLine("Please select an option:");
@@ -10,11 +11,16 @@ internal static class ExpressionDemo
         Console.WriteLine("4. Quit");
     }
 
+
+
     /// <summary>
     /// The main entry point for the application.
     /// </summary>
     static void Main(string[] args)
     {
+
+        ExpressionTree eTree = new ExpressionTree("0");
+
         while (true)
         {
             DisplayMenu();
@@ -26,13 +32,13 @@ internal static class ExpressionDemo
                 switch (selection)
                 {
                     case 1:
-                        Console.WriteLine("You selected Option 1.");
+                        createNewTree();
                         break;
                     case 2:
-                        Console.WriteLine("You selected Option 2.");
+                        setVariableName();
                         break;
                     case 3:
-                        Console.WriteLine("You selected Option 3.");
+                        evaluateTree();
                         break;
                     case 4:
                         return;
@@ -47,6 +53,26 @@ internal static class ExpressionDemo
             }
 
             Console.WriteLine();
+        }
+
+        void createNewTree()
+        {
+            eTree = new ExpressionTree(Console.ReadLine());
+        }
+
+        void setVariableName()
+        {
+            Console.WriteLine("Enter Variable Name: ");
+            string vName = Console.ReadLine();
+
+            Console.WriteLine("Enter Variable Value:");
+            double vValue = double.Parse(Console.ReadLine());
+            eTree.SetVariable(vName, vValue);
+        }
+
+        void evaluateTree()
+        {
+           Console.WriteLine(eTree.Evaluate());
         }
     }
 }
