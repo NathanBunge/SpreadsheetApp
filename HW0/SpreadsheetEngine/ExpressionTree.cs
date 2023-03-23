@@ -9,7 +9,7 @@
     /// <summary>
     /// Class to contain expression tree and nodes.
     /// </summary>
-    public class ExpressionTree
+    public partial class ExpressionTree
     {
         private readonly ExpressionNode root;
         private static Dictionary<string, double> variableDict = new Dictionary<string, double>();
@@ -120,6 +120,8 @@
             // Set the root to the oporator node using factory
             ExpressionNode opNode = OperatorNodeFactory.CreateOperatorNode(op, left, right);
 
+            return opNode;
+
             // Old code
             /*
             if (op == '+')
@@ -145,6 +147,7 @@
             // invalid oporaters
             throw new ArgumentException("Invalid operator: " + expression[1]);
             */
+
         }
 
 
