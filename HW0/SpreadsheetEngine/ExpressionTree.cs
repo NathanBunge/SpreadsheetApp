@@ -113,6 +113,15 @@
             string leftside = expression.Substring(0, opIndex);
             string rightside = expression.Substring(opIndex + 1);
 
+            // first create left and right sides
+            ExpressionNode left = this.Compile(leftside);
+            ExpressionNode right = this.Compile(rightside);
+
+            // Set the root to the oporator node using factory
+            ExpressionNode opNode = OperatorNodeFactory.CreateOperatorNode(op, left, right);
+
+            // Old code
+            /*
             if (op == '+')
             {
                 return new AddOperatorNode(this.Compile(leftside), this.Compile(rightside));
@@ -135,9 +144,9 @@
 
             // invalid oporaters
             throw new ArgumentException("Invalid operator: " + expression[1]);
+            */
         }
 
-        // since nodes don't exist outside the tree, we define them here
 
         /// <summary>
         /// Base abstract class for nodes.
@@ -253,85 +262,8 @@
             }
         }
 
-        /// <summary>
-        /// Subclass for adding nodes.
-        /// </summary>
-        public class AddOperatorNode : OperatorNode
-        {
-            public AddOperatorNode(ExpressionNode left, ExpressionNode right)
-                : base(left, right)
-            {
-            }
-
-            /// <summary>
-            /// Adds both sides.
-            /// </summary>
-            /// <returns>value after adding.</returns>
-            public override double Evaluate()
-            {
-                return this.Left.Evaluate() + this.Right.Evaluate();
-            }
-        }
-
-        /// <summary>
-        /// Subclass for subtracting nodes.
-        /// </summary>
-        public class SubtractOperatorNode : OperatorNode
-        {
-            public SubtractOperatorNode(ExpressionNode left, ExpressionNode right)
-                : base(left, right)
-            {
-            }
-
-            /// <summary>
-            /// Subtract both sides.
-            /// </summary>
-            /// <returns>value after subtracting.</returns>
-            public override double Evaluate()
-            {
-                return this.Left.Evaluate() - this.Right.Evaluate();
-            }
-        }
-
-        /// <summary>
-        /// Subclass for multiplication.
-        /// </summary>
-        public class MultiplyOperatorNode : OperatorNode
-        {
-            public MultiplyOperatorNode(ExpressionNode left, ExpressionNode right)
-                : base(left, right)
-            {
-            }
-
-            /// <summary>
-            /// Multiply each side
-            /// </summary>
-            /// <returns>value after multiplication</returns>
-            public override double Evaluate()
-            {
-                return this.Left.Evaluate() * this.Right.Evaluate();
-            }
-        }
-
-        /// <summary>
-        /// Subclass for dividing.
-        /// </summary>
-        public class DivideOperatorNode : OperatorNode
-        {
-            public DivideOperatorNode(ExpressionNode left, ExpressionNode right)
-                : base(left, right)
-            {
-            }
-
-            /// <summary>
-            /// Divide one said from another.
-            /// </summary>
-            /// <returns>value after eval.</returns>
-            public override double Evaluate()
-            {
-                return this.Left.Evaluate() / this.Right.Evaluate();
-            }
-        }
 
     }
+    
+
 }
