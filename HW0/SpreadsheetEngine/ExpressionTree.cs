@@ -54,8 +54,8 @@
             int index = -1;
             foreach (char op in operators)
             {
-                int i = str.IndexOf(op);
-                if (i >= 0 && (index == -1 || i < index))
+                int i = str.LastIndexOf(op);
+                if (i >= 0 && (index == -1 || i > index))
                 {
                     index = i;
                 }
@@ -109,9 +109,9 @@
             int opIndex = FindOperatorIndex(expression);
             char op = expression[opIndex];
 
-            //create left and rights sides
+            // create left and rights sides
             string leftside = expression.Substring(0, opIndex);
-            string rightside = expression.Substring(opIndex+1);
+            string rightside = expression.Substring(opIndex + 1);
 
             if (op == '+')
             {

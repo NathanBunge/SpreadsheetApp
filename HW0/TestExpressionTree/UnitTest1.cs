@@ -56,6 +56,16 @@ namespace TestExpressionTree
         }
 
         [Test]
+        public void TestSubtractionNodeDoubleEvaluate()
+        {
+            string expression = "1-2-3";
+            var tree = new ExpressionTree(expression);
+            var result = tree.Evaluate();
+
+            Assert.AreEqual(-4, result);
+        }
+
+        [Test]
         public void TestSubtractionNodeEvaluateBoundary()
         {
             string expression = "0-0";
@@ -101,6 +111,7 @@ namespace TestExpressionTree
             string expression = double.MaxValue.ToString() + "*9";
             var tree = new ExpressionTree(expression);
             Assert.Throws<System.OverflowException>(() => tree.Evaluate());
+
         }
 
 
