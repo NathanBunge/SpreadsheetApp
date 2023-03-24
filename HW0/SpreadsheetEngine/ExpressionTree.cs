@@ -13,6 +13,7 @@
     {
         private readonly ExpressionNode root;
         private static Dictionary<string, double> variableDict = new Dictionary<string, double>();
+        OperatorNodeFactory opFactory = new OperatorNodeFactory();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpressionTree"/> class.
@@ -43,27 +44,7 @@
             return true;
         }
 
-        /// <summary>
-        /// Finds index of oporator. May take this outside class.
-        /// </summary>
-        /// <param name="str">expression string.</param>
-        /// <returns>Index of oporator.</returns>
-        public static int FindOperatorIndex(string str)
-        {
-            char[] operators = { '+', '-', '*', '/' };
-            int index = -1;
-            foreach (char op in operators)
-            {
-                int i = str.LastIndexOf(op);
-                if (i >= 0 && (index == -1 || i > index))
-                {
-                    index = i;
-                }
-            }
-
-            return index;
-        }
-
+        
 
         /// <summary>
         /// sets variable name, adding to dict.
@@ -106,7 +87,7 @@
                 }
             }
             // Find first instance of oporation
-            int opIndex = FindOperatorIndex(expression);
+            int opIndex = opFactory.FindOperatorIndex(expression);
             char op = expression[opIndex];
 
             // create left and rights sides
@@ -118,7 +99,7 @@
             ExpressionNode right = this.Compile(rightside);
 
             // Set the root to the oporator node using factory
-            ExpressionNode opNode = OperatorNodeFactory.CreateOperatorNode(op, left, right);
+            ExpressionNode opNode = opFactory.CreateOperatorNode(op, left, right);
 
             return opNode;
 
@@ -235,6 +216,8 @@
         {
             private ExpressionNode left;
             private ExpressionNode right;
+
+            private static char operatorType;
 
             /// <summary>
             /// Gets for left node.

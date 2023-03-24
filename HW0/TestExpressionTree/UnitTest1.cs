@@ -190,5 +190,25 @@ namespace TestExpressionTree
 
         }
 
+
+        // -- testing mixed operators
+        [Test]
+        public void TestAdditionAndMultiplicationBackward()
+        {
+            string expression = "1+2*5";
+            var tree = new ExpressionTree(expression);
+            var result = tree.Evaluate();
+
+            Assert.AreEqual(11, result);
+        }
+        [Test]
+        public void TestAdditionAndMultiplication()
+        {
+            string expression = "1*2+5";
+            var tree = new ExpressionTree(expression);
+            var result = tree.Evaluate();
+
+            Assert.AreEqual(7, result);
+        }
     }
 }
