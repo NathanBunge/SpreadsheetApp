@@ -14,6 +14,7 @@
         private readonly ExpressionNode root;
         private static Dictionary<string, double> variableDict = new Dictionary<string, double>();
         OperatorNodeFactory opFactory = new OperatorNodeFactory();
+        
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpressionTree"/> class.
@@ -22,8 +23,12 @@
         /// <param name="expression">expression to add.</param>
         public ExpressionTree(string expression)
         {
-            this.root = this.BuildTree(expression);
-            //this.root = this.Compile(expression);
+            // First convert expression to postfix
+            ShuntingYard yard = new ShuntingYard(this.opFactory.Precedences);
+            string postfix = yard.ConvertToPostfix(expression);
+
+            // Then create tree
+            this.root = this.BuildTree(postfix);
         }
 
 
@@ -284,9 +289,5 @@
                 this.right = right;
             }
         }
-
-
     }
-    
-
 }

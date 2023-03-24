@@ -19,12 +19,16 @@
 
             public OperatorNodeFactory()
             {
-                TraverseAvailibleOperators((op, Type) => operators.Add(op, Type));
+                TraverseAvailibleOperators((op, pres, Type) => { operators.Add(op, Type); precedences.Add(op, pres); });
             }
 
             private Dictionary<char, Type> operators = new Dictionary<char, Type>() { };
+            private Dictionary<char, int> precedences = new Dictionary<char, int>() { };
 
-            private delegate void OnOperator(char op, Type type);
+            public Dictionary<char, int> Precedences
+            { get { return this.precedences; } }
+
+            private delegate void OnOperator(char op, int precedence, Type type);
 
             public OperatorNode CreateOperatorNode(char op, ExpressionNode left, ExpressionNode right)
             {
@@ -50,15 +54,18 @@
                     foreach(var type in operatorType)
                     {
                         PropertyInfo operatorField = type.GetProperty("OperatorType");
-                        if(operatorField != null)
+                        PropertyInfo precedenceField = type.GetProperty("OperatorPrecedence");
+                        if (operatorField != null && precedenceField != null)
                         {
-                            object value = operatorField.GetValue(type);
+                            object opValue = operatorField.GetValue(type);
+                            object opPrec = precedenceField.GetValue(type);
 
-                            if(value is char)
+                            if (opValue is char && opPrec is int)
                             {
-                                char operatorSymbol = (char)value;
+                                char operatorSymbol = (char)opValue;
+                                int operatorPrecedence = (int)opPrec;
 
-                                onOperator(operatorSymbol, type);
+                                onOperator(operatorSymbol, operatorPrecedence, type);
                             }
                         }
                     }
@@ -86,24 +93,27 @@
             }
 
 
-
             /// <summary>
             /// Subclass for adding nodes.
             /// </summary>
             public class AddOperatorNode : OperatorNode
             {
+                public AddOperatorNode(ExpressionNode left, ExpressionNode right): base(left, right)
+                {
+                }
 
                 private static char operatorType = '+';
+                private static int operatorPrecedence = 2;
 
                 public static char OperatorType
                 {
                     get { return operatorType; }
                 }
-
-                public AddOperatorNode(ExpressionNode left, ExpressionNode right)
-                    : base(left, right)
+                public static int OperatorPrecedence
                 {
+                    get { return operatorPrecedence; }
                 }
+
 
                 /// <summary>
                 /// Adds both sides.
@@ -120,15 +130,21 @@
             /// </summary>
             public class SubtractOperatorNode : OperatorNode
             {
+
+                public SubtractOperatorNode(ExpressionNode left, ExpressionNode right)
+                    : base(left, right)
+                {
+                }
                 private static char operatorType = '-';
+                private static int operatorPrecedence = 2;
 
                 public static char OperatorType
                 {
                     get { return operatorType; }
                 }
-                public SubtractOperatorNode(ExpressionNode left, ExpressionNode right)
-                    : base(left, right)
+                public static int OperatorPrecedence
                 {
+                    get { return operatorPrecedence; }
                 }
 
                 /// <summary>
@@ -146,15 +162,22 @@
             /// </summary>
             public class MultiplyOperatorNode : OperatorNode
             {
+
+                public MultiplyOperatorNode(ExpressionNode left, ExpressionNode right)
+                    : base(left, right)
+                {
+                }
+
                 private static char operatorType = '*';
+                private static int operatorPrecedence = 3;
 
                 public static char OperatorType
                 {
                     get { return operatorType; }
                 }
-                public MultiplyOperatorNode(ExpressionNode left, ExpressionNode right)
-                    : base(left, right)
+                public static int OperatorPrecedence
                 {
+                    get { return operatorPrecedence; }
                 }
 
                 /// <summary>
@@ -172,15 +195,22 @@
             /// </summary>
             public class DivideOperatorNode : OperatorNode
             {
+
+                public DivideOperatorNode(ExpressionNode left, ExpressionNode right)
+                    : base(left, right)
+                {
+                }
+
                 private static char operatorType = '/';
+                private static int operatorPrecedence = 3;
 
                 public static char OperatorType
                 {
                     get { return operatorType; }
                 }
-                public DivideOperatorNode(ExpressionNode left, ExpressionNode right)
-                    : base(left, right)
+                public static int OperatorPrecedence
                 {
+                    get { return operatorPrecedence; }
                 }
 
                 /// <summary>
