@@ -22,7 +22,8 @@
         /// <param name="expression">expression to add.</param>
         public ExpressionTree(string expression)
         {
-            this.root = this.Compile(expression);
+            this.root = this.BuildTree(expression);
+            //this.root = this.Compile(expression);
         }
 
 
@@ -65,7 +66,43 @@
             return this.root.Evaluate();
         }
 
+        private ExpressionNode BuildTree(string postfix)
+        {
+            Stack<ExpressionNode> stack = new Stack<ExpressionNode>();
 
+            string[] tokens = postfix.Split(' ');
+
+            foreach (string token in tokens)
+            {
+                // If token is numeric, just push it
+                if(double.TryParse(token, out double value))
+                {
+                    stack.Push(new NumericNode(value));
+                }
+
+                // If token is a variable, just push it
+                else if (char.IsLetter(token[0]))
+                {
+                    return new VariableNode(token);
+                }
+
+                // Else it must be an oporator
+                else if (char.TryParse(token, out var operatorChar))
+                {
+                    ExpressionNode right = stack.Pop();
+                    ExpressionNode left = stack.Pop();
+                    OperatorNode newNode = opFactory.CreateOperatorNode(operatorChar, left, right);
+                    stack.Push(newNode);
+                }
+                else
+                {
+                    throw new Exception("Unknown token");
+                }
+            }
+
+            // Return the root node.
+            return stack.Pop();
+        }
 
         private ExpressionNode Compile(string expression)
         {
