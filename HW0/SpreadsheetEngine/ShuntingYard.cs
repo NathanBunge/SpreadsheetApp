@@ -28,16 +28,26 @@
         {
             var output = new List<string>();
             var operatorStack = new Stack<char>();
+            var currentToken = "";
 
             foreach (char c in infix)
             {
-                if (char.IsDigit(c))
+                if (Char.IsLetter(c))
                 {
-                    output.Add(c.ToString());
+                    currentToken += c;
+                }
+                else if (Char.IsDigit(c))
+                {
+                    currentToken += c;
                 }
                 else if (IsOperator(c))
                 {
-                    while (operatorStack.Count > 0 && IsOperator(operatorStack.Peek()) && this.precedence[operatorStack.Peek()] >= this.precedence[c])
+                    if (currentToken != "")
+                    {
+                        output.Add(currentToken);
+                        currentToken = "";
+                    }
+                    while (operatorStack.Count > 0 && IsOperator(operatorStack.Peek()) && Precedence[operatorStack.Peek()] >= Precedence[c])
                     {
                         output.Add(operatorStack.Pop().ToString());
                     }
@@ -45,10 +55,20 @@
                 }
                 else if (IsLeftParenthesis(c))
                 {
+                    if (currentToken != "")
+                    {
+                        output.Add(currentToken);
+                        currentToken = "";
+                    }
                     operatorStack.Push(c);
                 }
                 else if (IsRightParenthesis(c))
                 {
+                    if (currentToken != "")
+                    {
+                        output.Add(currentToken);
+                        currentToken = "";
+                    }
                     while (operatorStack.Count > 0 && !IsLeftParenthesis(operatorStack.Peek()))
                     {
                         output.Add(operatorStack.Pop().ToString());
@@ -65,6 +85,11 @@
                 }
             }
 
+            if (currentToken != "")
+            {
+                output.Add(currentToken);
+            }
+
             while (operatorStack.Count > 0)
             {
                 if (IsLeftParenthesis(operatorStack.Peek()))
@@ -76,6 +101,7 @@
 
             return string.Join(" ", output);
         }
+
 
         private bool IsOperator(char c)
         {

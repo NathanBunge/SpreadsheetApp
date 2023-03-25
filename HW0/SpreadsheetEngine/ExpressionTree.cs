@@ -88,7 +88,13 @@
                 // If token is a variable, just push it
                 else if (char.IsLetter(token[0]))
                 {
-                    return new VariableNode(token);
+                    // Add to variable dict if not in already
+                    if (!variableDict.ContainsKey(token))
+                    {
+                        variableDict.Add(token, 0);
+                    }
+
+                    stack.Push(new VariableNode(token));
                 }
 
                 // Else it must be an oporator
