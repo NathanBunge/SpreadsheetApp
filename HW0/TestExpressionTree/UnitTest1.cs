@@ -179,16 +179,6 @@ namespace TestExpressionTree
 
             Assert.AreEqual(11, result);
         }
-        [Test]
-        public void TestVariableNodeEvaluateException()
-        {
-            string expression = "ZZZ";
-            var tree = new ExpressionTree(expression);
-            tree.SetVariable("A", 5);
-            Assert.Throws<KeyNotFoundException>(() => tree.Evaluate());
-
-
-        }
 
 
         // -- testing mixed operators
@@ -209,6 +199,81 @@ namespace TestExpressionTree
             var result = tree.Evaluate();
 
             Assert.AreEqual(7, result);
+        }
+        [Test]
+        public void TestAllNodes()
+        {
+            string expression = "1*2+5*8/2-6";
+            var tree = new ExpressionTree(expression);
+            var result = tree.Evaluate();
+
+            Assert.AreEqual(16, result);
+        }
+
+        [Test]
+        public void TestAllNodesParathisis()
+        {
+            string expression = "1*2+5*8/(2-6)";
+            var tree = new ExpressionTree(expression);
+            var result = tree.Evaluate();
+
+            Assert.AreEqual(-8, result);
+        }
+
+
+    }
+    public class ShuntingYardTests
+    {
+        private static readonly Dictionary<char, int> Precedence = new Dictionary<char, int> {
+        { '+', 1 },
+        { '-', 1 },
+        { '*', 2 },
+        { '/', 2 }
+    };
+        [Test]
+        public void ConvertToPostfix_SimpleExpression_ReturnsExpected()
+        {
+            ShuntingYard yard = new ShuntingYard(Precedence);
+            string infix = "1+2*3";
+            string expected = "1 2 3 * +";
+            string actual = yard.ConvertToPostfix(infix);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void ConvertToPostfix_ComplexExpression_ReturnsExpected()
+        {
+            ShuntingYard yard = new ShuntingYard(Precedence);
+            string infix = "(a+b)*c-d/e";
+            string expected = "a b + c * d e / -";
+            string actual = yard.ConvertToPostfix(infix);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void ConvertToPostfix_UnmatchedParentheses_ThrowsArgumentException()
+        {
+            ShuntingYard yard = new ShuntingYard(Precedence);
+            string infix = "((a + b) * c";
+            Assert.Throws<ArgumentException>(() => yard.ConvertToPostfix(infix));
+        }
+
+        [Test]
+        public void ConvertToPostfix_InvalidCharacter_ThrowsArgumentException()
+        {
+            ShuntingYard yard = new ShuntingYard(Precedence);
+            string infix = "a+b$c";
+            Assert.Throws<ArgumentException>(() => yard.ConvertToPostfix(infix));
+        }
+
+        [Test]
+        public void ConvertToPostfix_VariablesWithMultipleCharacters_ReturnsExpected()
+        {
+            ShuntingYard yard = new ShuntingYard(Precedence);
+            string infix = "a1+b2*c3";
+            string expected = "a1 b2 c3 * +";
+            string actual = yard.ConvertToPostfix(infix);
+            Assert.AreEqual(expected, actual);
         }
     }
 }

@@ -23,6 +23,9 @@
         /// <param name="expression">expression to add.</param>
         public ExpressionTree(string expression)
         {
+            // First clear variables
+            this.ClearVariables();
+
             // First convert expression to postfix
             ShuntingYard yard = new ShuntingYard(this.opFactory.Precedences);
             string postfix = yard.ConvertToPostfix(expression);
@@ -113,6 +116,11 @@
 
             // Return the root node.
             return stack.Pop();
+        }
+
+        private void ClearVariables()
+        {
+            variableDict.Clear();
         }
 
         private ExpressionNode Compile(string expression)
