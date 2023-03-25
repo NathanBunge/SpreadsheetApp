@@ -30,6 +30,12 @@ namespace SpreadsheetEngine
 
         public Dictionary<char, int> Precedence { get { return this.precedence; } }
 
+        /// <summary>
+        /// Converts infix to postfix expression.
+        /// </summary>
+        /// <param name="infix">input string.</param>
+        /// <returns>postfix string</returns>
+        /// <exception cref="ArgumentException">exception.</exception>
         public string ConvertToPostfix(string infix)
         {
             var output = new List<string>();

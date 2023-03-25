@@ -16,20 +16,37 @@
         /// </summary>
         public class OperatorNodeFactory
         {
-
+            /// <summary>
+            /// Initializes a new instance of the <see cref="OperatorNodeFactory"/> class.
+            /// Constructor.
+            /// </summary>
             public OperatorNodeFactory()
             {
-                TraverseAvailibleOperators((op, pres, Type) => { operators.Add(op, Type); precedences.Add(op, pres); });
+                this.TraverseAvailibleOperators((op, pres, Type) => { this.operators.Add(op, Type);
+                    precedences.Add(op, pres); });
             }
 
             private Dictionary<char, Type> operators = new Dictionary<char, Type>() { };
             private Dictionary<char, int> precedences = new Dictionary<char, int>() { };
 
+            // From in class slides
+            private delegate void OnOperator(char op, int precedence, Type type);
+
+            /// <summary>
+            /// Gets presidence dictionary.
+            /// </summary>
             public Dictionary<char, int> Precedences
             { get { return this.precedences; } }
 
-            private delegate void OnOperator(char op, int precedence, Type type);
-
+ 
+            /// <summary>
+            /// From in class slides
+            /// </summary>
+            /// <param name="op">operator character type.</param>
+            /// <param name="left">left subtree.</param>
+            /// <param name="right">right subtree.</param>
+            /// <returns>Operator node root.</returns>
+            /// <exception cref="Exception">exception.</exception>
             public OperatorNode CreateOperatorNode(char op, ExpressionNode left, ExpressionNode right)
             {
                 if (this.operators.ContainsKey(op))
@@ -45,13 +62,18 @@
 
             }
 
+
+            /// <summary>
+            /// From in class code. Added lookup for operator precedence.
+            /// </summary>
+            /// <param name="onOperator">Delagate.</param>
             private void TraverseAvailibleOperators(OnOperator onOperator)
             {
                 Type operatorNodeType = typeof(OperatorNode);
-                foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
                 {
                     IEnumerable<Type> operatorType = assembly.GetTypes().Where(t => t.IsSubclassOf(operatorNodeType));
-                    foreach(var type in operatorType)
+                    foreach (var type in operatorType)
                     {
                         PropertyInfo operatorField = type.GetProperty("OperatorType");
                         PropertyInfo precedenceField = type.GetProperty("OperatorPrecedence");
@@ -73,7 +95,7 @@
             }
 
             /// <summary>
-            /// Finds index of oporator. May take this outside class.
+            ///  Outdated, no longer used.
             /// </summary>
             /// <param name="str">expression string.</param>
             /// <returns>Index of oporator.</returns>
