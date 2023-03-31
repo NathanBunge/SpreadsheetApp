@@ -53,6 +53,8 @@
             this.spreadsheetGrid.RowHeadersWidth = 62;
             this.spreadsheetGrid.Size = new System.Drawing.Size(800, 450);
             this.spreadsheetGrid.TabIndex = 0;
+            this.spreadsheetGrid.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.spreadsheetGrid_CellBeginEdit);
+            this.spreadsheetGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.spreadsheetGrid_CellEndEdit);
             // 
             // colA
             // 

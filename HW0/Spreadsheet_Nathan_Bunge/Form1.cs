@@ -123,5 +123,20 @@ namespace Spreadsheet_Nathan_Bunge
                 s.Text = "=B" + (i + 1).ToString();
             }
         }
+
+        private void spreadsheetGrid_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            int row = e.RowIndex;
+            int col = e.ColumnIndex;
+
+            this.spreadsheetGrid.Rows[row].Cells[col].Value = this.sheet.GetCell(row, col).Text;
+        }
+
+        private void spreadsheetGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            int row = e.RowIndex;
+            int col = e.ColumnIndex;
+            this.sheet.GetCell(row, col).Text = this.spreadsheetGrid.Rows[row].Cells[col].Value.ToString();
+        }
     }
 }
