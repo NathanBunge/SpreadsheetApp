@@ -94,27 +94,39 @@ namespace SpreadsheetEngine
                 Cell cell = (Cell)sender;
                 if (cell.Text.First() == '=')
                 {
-                    // cell.Value = cell.Text.Substring(1);
-                    char colName = cell.Text[1];
-                    char rowName = cell.Text[2];
+                    string expression = cell.Text.Substring(1);
 
-                    // convert colname to a integer
-                    int colIndex = char.ToUpper(colName) - 64;
+                    // Make expression tree
+                    ExpressionTree eTree = new ExpressionTree(expression, this.GetCellValue);
 
-                    // convert rowname to integer
-                    int rowIndex = rowName - '0';
+                    // set value of cell to evaluated expression
+                    cell.Value = eTree.Evaluate().ToString();
 
-                    // set value of cell to text of referenced cell
-                    cell.Value = this.cellSheet[rowIndex - 1, colIndex - 1].Text;
+
                 }
                 else
                 {
+                    Console.WriteLine("something else changed");
                     cell.Value = cell.Text;
                 }
             }
 
             // notify listeners
             this.CellPropertyChanged(sender, new PropertyChangedEventArgs("CellChanged"));
+        }
+
+        private double GetCellValue(string cellName)
+        {
+            char colName = cellName[0];
+            string rowName = cellName.Substring(1);
+
+            // convert colname to a integer
+            int colIndex = char.ToUpper(colName) - 64;
+
+            // convert rowname to integer
+            int rowIndex = int.Parse(rowName);
+
+            return double.Parse(this.cellSheet[rowIndex - 1, colIndex - 1].Value);
         }
 
         /// <summary>
@@ -133,5 +145,7 @@ namespace SpreadsheetEngine
             {
             }
         }
+
+        
     }
 }

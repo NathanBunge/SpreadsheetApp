@@ -14,6 +14,7 @@
         private readonly ExpressionNode root;
         private static Dictionary<string, double> variableDict = new Dictionary<string, double>();
         OperatorNodeFactory opFactory = new OperatorNodeFactory();
+        private static Func<string,double> variableLoopup;
         
 
         /// <summary>
@@ -21,8 +22,9 @@
         /// Constructor for expression tree.
         /// </summary>
         /// <param name="expression">expression to add.</param>
-        public ExpressionTree(string expression)
+        public ExpressionTree(string expression, Func<string,double> lookupFunction)
         {
+            variableLoopup = lookupFunction;
             // First clear variables
             this.ClearVariables();
 
@@ -250,18 +252,20 @@
             /// <returns>numerical value.</returns>
             public override double Evaluate()
             {
+                /*
                 // if variable is in dictionary, return the value.
                 if (variableDict.ContainsKey(this.variableName))
                 {
                     return variableDict[this.variableName];
                 }
+                */
 
-                // else return error.
-                else
-                {
-                    throw new KeyNotFoundException("Undefined variable: " + this.variableName);
-                }
+                // else loopup in spreadsheet
 
+                return variableLoopup(this.variableName);
+                
+
+                throw new KeyNotFoundException("Undefined variable: " + this.variableName);
             }
         }
 
