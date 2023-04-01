@@ -9,6 +9,7 @@ namespace SpreadsheetEngine
     using System.ComponentModel;
     using System.Linq;
     using System.Text;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -47,7 +48,7 @@ namespace SpreadsheetEngine
         /// <summary>
         /// Cell changed event.
         /// </summary>
-        public event PropertyChangedEventHandler CellPropertyChanged = (sender, e) => { };
+        public event PropertyChangedEventHandler SheetPropertyChanged = (sender, e) => { };
 
         /// <summary>
         /// Gets count of rows.
@@ -86,6 +87,40 @@ namespace SpreadsheetEngine
             return this.cellSheet[row, col];
         }
 
+        public Cell GetCell(string cellName)
+        {
+            int row=0;
+            int col = 0;
+            this.GetCellIndex(cellName, ref row, ref col);
+            return this.GetCell(row, col);
+        }
+
+        public void SubscribeToCell(Cell target, Cell source)
+        {
+            target.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == "Value" || e.PropertyName == "Text")
+                {
+                    string originalText = source.Text;
+                    source.Text = "0";
+                    source.Text = originalText;
+                }
+            };
+        }
+
+        private List<string> GetVariables(string inputString)
+        {
+            List<string> variables = new List<string>();
+            Regex regex = new Regex(@"[A-Za-z]\d+");
+
+            foreach (Match match in regex.Matches(inputString))
+            {
+                variables.Add(match.Value);
+            }
+
+            return variables;
+        }
+
         private void Cell_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             // this will update the value of a cell when it see's that text is changed
@@ -102,7 +137,14 @@ namespace SpreadsheetEngine
                     // set value of cell to evaluated expression
                     cell.Value = eTree.Evaluate().ToString();
 
+                    // Get list of variables used
+                    List<string> vs = this.GetVariables(expression);
 
+                    // Subscribe to list of cells
+                    foreach (string v in vs)
+                    {
+                        this.SubscribeToCell(this.GetCell(v), cell);
+                    }
                 }
                 else
                 {
@@ -112,10 +154,17 @@ namespace SpreadsheetEngine
             }
 
             // notify listeners
-            this.CellPropertyChanged(sender, new PropertyChangedEventArgs("CellChanged"));
+            this.SheetPropertyChanged(sender, new PropertyChangedEventArgs("CellChanged"));
         }
 
-        private double GetCellValue(string cellName)
+        /// <summary>
+        ///  should add saftly checks for this
+        /// </summary>
+        /// <param name="cellName"></param>
+        /// <param name="col"></param>
+        /// <param name="row"></param>
+        /// <returns></returns>
+        private bool GetCellIndex(string cellName, ref int row, ref int col)
         {
             char colName = cellName[0];
             string rowName = cellName.Substring(1);
@@ -126,7 +175,22 @@ namespace SpreadsheetEngine
             // convert rowname to integer
             int rowIndex = int.Parse(rowName);
 
-            return double.Parse(this.cellSheet[rowIndex - 1, colIndex - 1].Value);
+            col = colIndex-1;
+            row = rowIndex-1;
+
+            return true;
+        }
+
+        private double GetCellValue(string cellName)
+        {
+            int rowIndex = 0;
+            int colIndex = 0;
+            this.GetCellIndex(cellName, ref rowIndex, ref colIndex);
+            double cellValue = 0;
+
+            double.TryParse(this.cellSheet[rowIndex, colIndex].Value, out cellValue);
+
+            return cellValue;
         }
 
         /// <summary>

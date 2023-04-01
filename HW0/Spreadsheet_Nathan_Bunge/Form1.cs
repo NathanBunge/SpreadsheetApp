@@ -70,7 +70,7 @@ namespace Spreadsheet_Nathan_Bunge
                 row.HeaderCell.Value = string.Format("{0}", row.Index + 1);
             }
 
-            this.sheet.CellPropertyChanged += this.Sheet_CellPropertyChanged;
+            this.sheet.SheetPropertyChanged += this.Sheet_CellPropertyChanged;
         }
 
         private void Form1_Load(object sender, EventArgs e)

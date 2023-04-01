@@ -36,6 +36,23 @@
             this.root = this.BuildTree(postfix);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExpressionTree"/> class.
+        /// Constructor for expression tree.
+        /// </summary>
+        /// <param name="expression">expression to add.</param>
+        public ExpressionTree(string expression)
+        {
+            // First clear variables
+            this.ClearVariables();
+
+            // First convert expression to postfix
+            ShuntingYard yard = new ShuntingYard(this.opFactory.Precedences);
+            string postfix = yard.ConvertToPostfix(expression);
+
+            // Then create tree
+            this.root = this.BuildTree(postfix);
+        }
 
         /// <summary>
         /// Check is sting is alphanumeric. Maybe take this outside class.
@@ -263,7 +280,6 @@
                 // else loopup in spreadsheet
 
                 return variableLoopup(this.variableName);
-                
 
                 throw new KeyNotFoundException("Undefined variable: " + this.variableName);
             }
