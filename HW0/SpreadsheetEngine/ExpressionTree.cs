@@ -281,7 +281,7 @@
 
                 return variableLoopup(this.variableName);
 
-                throw new KeyNotFoundException("Undefined variable: " + this.variableName);
+                
             }
         }
 

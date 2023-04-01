@@ -173,10 +173,13 @@ namespace SpreadsheetEngine
             int colIndex = char.ToUpper(colName) - 64;
 
             // convert rowname to integer
-            int rowIndex = int.Parse(rowName);
+            if (!int.TryParse(rowName, out int rowIndex))
+            {
+                throw new KeyNotFoundException();
+            }
 
-            col = colIndex-1;
-            row = rowIndex-1;
+            col = colIndex - 1;
+            row = rowIndex - 1;
 
             return true;
         }
@@ -185,12 +188,21 @@ namespace SpreadsheetEngine
         {
             int rowIndex = 0;
             int colIndex = 0;
-            this.GetCellIndex(cellName, ref rowIndex, ref colIndex);
             double cellValue = 0;
+            try
+            {
+                this.GetCellIndex(cellName, ref rowIndex, ref colIndex);
+                double.TryParse(this.cellSheet[rowIndex, colIndex].Value, out cellValue);
+            }
 
-            double.TryParse(this.cellSheet[rowIndex, colIndex].Value, out cellValue);
+            catch (KeyNotFoundException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             return cellValue;
+           
+          
         }
 
         /// <summary>
