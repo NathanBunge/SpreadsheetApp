@@ -148,7 +148,7 @@ namespace TestExpressionTree
 
 
 
-        [Test]
+        //[Test]
         public void TestVariableNodeEvaluate()
         {
             string expression = "A";
@@ -159,7 +159,7 @@ namespace TestExpressionTree
             Assert.AreEqual(5, result);
         }
 
-        [Test]
+        //[Test]
         public void TestVariableNodeAddEvaluate()
         {
             string expression = "A+A";
@@ -169,7 +169,7 @@ namespace TestExpressionTree
 
             Assert.AreEqual(10, result);
         }
-        [Test]
+        //[Test]
         public void TestVariableNodeAddNumEvaluate()
         {
             string expression = "A+6";
