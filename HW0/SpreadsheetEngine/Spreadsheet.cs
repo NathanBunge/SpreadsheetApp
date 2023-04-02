@@ -132,10 +132,20 @@ namespace SpreadsheetEngine
                     string expression = cell.Text.Substring(1);
 
                     // Make expression tree
-                    ExpressionTree eTree = new ExpressionTree(expression, this.GetCellValue);
+                    try
+                    {
+                        // Make tree
+                        ExpressionTree eTree = new ExpressionTree(expression, this.GetCellValue);
 
-                    // set value of cell to evaluated expression
-                    cell.Value = eTree.Evaluate().ToString();
+                        // set value of cell to evaluated expression
+                        cell.Value = eTree.Evaluate().ToString();
+                    }
+                    catch (KeyNotFoundException ex)
+                    {
+                        // If variable not found, just set to text
+                        cell.Value = cell.Text;
+                    }
+
 
                     // Get list of variables used
                     List<string> vs = this.GetVariables(expression);
@@ -194,15 +204,13 @@ namespace SpreadsheetEngine
                 this.GetCellIndex(cellName, ref rowIndex, ref colIndex);
                 double.TryParse(this.cellSheet[rowIndex, colIndex].Value, out cellValue);
             }
-
             catch (KeyNotFoundException ex)
             {
                 Console.WriteLine(ex.Message);
+                throw new KeyNotFoundException();
             }
 
             return cellValue;
-           
-          
         }
 
         /// <summary>
