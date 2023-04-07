@@ -11,6 +11,7 @@ namespace SpreadsheetEngine
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
+    using System.Windows.Input;
 
     /// <summary>
     /// TODO.
@@ -127,7 +128,11 @@ namespace SpreadsheetEngine
             if (e.PropertyName == "Text")
             {
                 Cell cell = (Cell)sender;
-                if (cell.Text.First() == '=')
+                if(cell.Text == "")
+                {
+                    cell.Value = "";
+                }
+                else if (cell.Text.First() == '=')
                 {
                     string expression = cell.Text.Substring(1);
 
@@ -161,10 +166,20 @@ namespace SpreadsheetEngine
                     Console.WriteLine("something else changed");
                     cell.Value = cell.Text;
                 }
+
+                // notify listeners
+                this.SheetPropertyChanged(sender, new PropertyChangedEventArgs("CellChanged"));
+            }
+            else if (e.PropertyName == "BGColor")
+            {
+                this.SheetPropertyChanged(sender, new PropertyChangedEventArgs("CellColorChanged"));
+            }
+            else
+            {
+                Console.WriteLine("Unkonwn cell property changed (maybe value?");
             }
 
-            // notify listeners
-            this.SheetPropertyChanged(sender, new PropertyChangedEventArgs("CellChanged"));
+
         }
 
         /// <summary>
@@ -229,7 +244,88 @@ namespace SpreadsheetEngine
             {
             }
         }
+    }
 
-        
+    public interface CellCommand : ICommand
+    {
+        void Execute();
+        void Undo();
+    }
+
+    public class CommandStack
+    {
+        private readonly Stack<CellCommand> commandStack;
+        private readonly Stack<CellCommand> undoStack;
+
+        public CommandStack()
+        {
+            this.commandStack = new Stack<CellCommand>();
+            this.undoStack = new Stack<CellCommand>();
+        }
+
+        public void ExecuteCommand(CellCommand newCommand)
+        {
+            this.commandStack.Push(newCommand);
+            newCommand.Execute(null);
+            this.undoStack.Clear();
+        }
+
+        public void UndoCommand()
+        {
+            if (this.commandStack.Count > 0)
+            {
+                CellCommand command = this.commandStack.Pop();
+                command.Undo();
+                this.undoStack.Push(command);
+            }
+        }
+
+        public void RedoCommand()
+        {
+            if (this.undoStack.Count > 0)
+            {
+                CellCommand command = this.undoStack.Pop();
+                command.Execute(null);
+                this.commandStack.Push(command);
+            }
+        }
+
+    }
+
+    public class CellTextChangeCommand : CellCommand
+    {
+        private Cell cell;
+        private string previousText;
+        private string newText;
+
+        public CellTextChangeCommand(Cell cell, string newText)
+        {
+            this.cell = cell;
+            this.previousText = cell.Text;
+            this.newText = newText;
+        }
+
+        // required for icommand
+        public event EventHandler CanExecuteChanged;
+
+        public bool CanExecute(object parameter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Execute()
+        {
+            this.cell.Text = this.newText;
+        }
+
+        public void Execute(object parameter)
+        {
+            this.cell.Text = this.newText;
+        }
+
+        public void Undo()
+        {
+            this.cell.Text = this.previousText;
+        }
     }
 }

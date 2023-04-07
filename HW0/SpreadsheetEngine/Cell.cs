@@ -15,6 +15,7 @@ namespace SpreadsheetEngine
         private int columnIndex;
         private string text;
         private string value;
+        private uint bGColor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Cell"/> class.
@@ -29,6 +30,8 @@ namespace SpreadsheetEngine
 
             this.text = string.Empty;
             this.value = string.Empty;
+
+            this.bGColor = 0xFFFFFFFF;
         }
 
         /// <summary>
@@ -96,6 +99,25 @@ namespace SpreadsheetEngine
 
                 this.value = value;
                 this.PropertyChanged(this, new PropertyChangedEventArgs("Value"));
+            }
+        }
+
+        public uint BGColor
+        {
+            get
+            {
+                return this.bGColor;
+            }
+
+            set
+            {
+                if (this.bGColor == value)
+                {
+                    return;
+                }
+
+                this.bGColor = value;
+                this.PropertyChanged(this, new PropertyChangedEventArgs("BGColor"));
             }
         }
     }

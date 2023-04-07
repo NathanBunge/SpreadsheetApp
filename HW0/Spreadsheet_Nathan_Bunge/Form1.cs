@@ -21,6 +21,7 @@ namespace Spreadsheet_Nathan_Bunge
     public partial class Form1 : Form
     {
         private Spreadsheet sheet;
+        private CommandStack commandStack;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Form1"/> class.
@@ -41,6 +42,7 @@ namespace Spreadsheet_Nathan_Bunge
             this.spreadsheetGrid.Columns.Clear();
 
             this.sheet = new Spreadsheet(50, 25);
+            this.commandStack = new CommandStack();
 
             // Add 26 columns
             StringBuilder sb = new StringBuilder("col");
@@ -88,6 +90,15 @@ namespace Spreadsheet_Nathan_Bunge
 
                 this.spreadsheetGrid.Rows[row].Cells[col].Value = cell.Value;
             }
+
+            if (e.PropertyName == "CellColorChanged")
+            {
+                Cell cell = (Cell)sender;
+                int row = cell.RowIndex;
+                int col = cell.ColumnIndex;
+
+                this.spreadsheetGrid.Rows[row].Cells[col].Style.BackColor = Color.FromArgb((int)cell.BGColor);
+            }
         }
 
         /// <summary>
@@ -107,6 +118,7 @@ namespace Spreadsheet_Nathan_Bunge
                 s = this.sheet.GetCell(randome.Next(0, 50), randome.Next(0, 25));
 
                 s.Text = "Sicko mode";
+                s.BGColor = 0xFFAABBCC;
             }
 
             // Set all cells in column B
@@ -136,7 +148,51 @@ namespace Spreadsheet_Nathan_Bunge
         {
             int row = e.RowIndex;
             int col = e.ColumnIndex;
-            this.sheet.GetCell(row, col).Text = this.spreadsheetGrid.Rows[row].Cells[col].Value.ToString();
+            Cell cell = this.sheet.GetCell(row,col);
+            string newText = this.spreadsheetGrid.Rows[row].Cells[col].Value?.ToString();
+
+            if (newText == null)
+            {
+                newText = "";
+            }
+
+            CellTextChangeCommand textChange = new CellTextChangeCommand(cell, newText);
+            this.commandStack.ExecuteCommand(textChange);
+
+
+
+            
+        }
+
+        private void undoRedoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void cellToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ColorDialog cd1 = new ColorDialog();
+            if (cd1.ShowDialog() == DialogResult.OK)
+            {
+                uint newColor = (uint)cd1.Color.ToArgb();
+                DataGridViewCell[] selectedCells = this.spreadsheetGrid.SelectedCells.Cast<DataGridViewCell>().ToArray();
+                foreach (DataGridViewCell cell in selectedCells)
+                {
+                    int row = cell.RowIndex;
+                    int col = cell.ColumnIndex;
+                    this.sheet.GetCell(row, col).BGColor = newColor;
+                }
+            }
+        }
+
+        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.commandStack.UndoCommand();
         }
     }
 }
