@@ -151,6 +151,14 @@ namespace Spreadsheet_Nathan_Bunge
             Cell cell = this.sheet.GetCell(row,col);
             string newText = this.spreadsheetGrid.Rows[row].Cells[col].Value?.ToString();
 
+            // Check if anything changed
+            if (newText == cell.Text)
+            {
+                // no commands, just go back to showing value
+                this.spreadsheetGrid.Rows[row].Cells[col].Value = cell.Value;
+                return;
+            }
+
             if (newText == null)
             {
                 newText = "";
@@ -158,10 +166,6 @@ namespace Spreadsheet_Nathan_Bunge
 
             CellTextChangeCommand textChange = new CellTextChangeCommand(cell, newText);
             this.commandStack.ExecuteCommand(textChange);
-
-
-
-            
         }
 
         private void undoRedoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -179,20 +183,33 @@ namespace Spreadsheet_Nathan_Bunge
             ColorDialog cd1 = new ColorDialog();
             if (cd1.ShowDialog() == DialogResult.OK)
             {
+                CellCommandGrouping colorCommandGroup = new CellCommandGrouping();
                 uint newColor = (uint)cd1.Color.ToArgb();
                 DataGridViewCell[] selectedCells = this.spreadsheetGrid.SelectedCells.Cast<DataGridViewCell>().ToArray();
-                foreach (DataGridViewCell cell in selectedCells)
+                foreach (DataGridViewCell dataCell in selectedCells)
                 {
-                    int row = cell.RowIndex;
-                    int col = cell.ColumnIndex;
-                    this.sheet.GetCell(row, col).BGColor = newColor;
+                    int row = dataCell.RowIndex;
+                    int col = dataCell.ColumnIndex;
+                    Cell cell = this.sheet.GetCell(row, col);
+
+                    // create command and execute
+                    CellColorChangeCommand colorChange = new CellColorChangeCommand(cell, newColor);
+                    colorCommandGroup.AddCommand(colorChange);
+                    
+                    //this.sheet.GetCell(row, col).BGColor = newColor;
                 }
+                this.commandStack.ExecuteCommand(colorCommandGroup);
             }
         }
 
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.commandStack.UndoCommand();
+        }
+
+        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.commandStack.RedoCommand();
         }
     }
 }

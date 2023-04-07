@@ -252,6 +252,50 @@ namespace SpreadsheetEngine
         void Undo();
     }
 
+    public class CellCommandGrouping : CellCommand
+    {
+        private readonly List<CellCommand> commands;
+        public CellCommandGrouping()
+        {
+            this.commands = new List<CellCommand>();
+        }
+
+        public event EventHandler CanExecuteChanged;
+
+        public void AddCommand(CellCommand newCommand)
+        {
+            this.commands.Add(newCommand);
+        }
+        public bool CanExecute(object parameter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Execute()
+        {
+            foreach (CellCommand command in this.commands)
+            {
+                command.Execute();
+            }
+        }
+
+        public void Execute(object parameter)
+        {
+            foreach (CellCommand command in this.commands)
+            {
+                command.Execute();
+            }
+        }
+
+        public void Undo()
+        {
+            foreach (CellCommand command in this.commands)
+            {
+                command.Undo();
+            }
+        }
+    }
+
     public class CommandStack
     {
         private readonly Stack<CellCommand> commandStack;
@@ -326,6 +370,43 @@ namespace SpreadsheetEngine
         public void Undo()
         {
             this.cell.Text = this.previousText;
+        }
+    }
+
+    public class CellColorChangeCommand : CellCommand
+    {
+        private Cell cell;
+        private uint previousBGColor;
+        private uint newBGColor;
+
+        public CellColorChangeCommand(Cell cell, uint newBGColor)
+        {
+            this.cell = cell;
+            this.previousBGColor = cell.BGColor;
+            this.newBGColor = newBGColor;
+        }
+
+        // required for ICommand
+        public event EventHandler CanExecuteChanged;
+
+        public bool CanExecute(object parameter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Execute()
+        {
+            this.cell.BGColor = this.newBGColor;
+        }
+
+        public void Execute(object parameter)
+        {
+            this.cell.BGColor = this.newBGColor;
+        }
+
+        public void Undo()
+        {
+            this.cell.BGColor = this.previousBGColor;
         }
     }
 }
