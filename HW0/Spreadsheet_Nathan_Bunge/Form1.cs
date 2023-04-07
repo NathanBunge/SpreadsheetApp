@@ -170,7 +170,7 @@ namespace Spreadsheet_Nathan_Bunge
 
         private void undoRedoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           
+            this.undoToolStripMenuItem.Text = "Undo " + this.commandStack.GetCommandType();
         }
 
         private void cellToolStripMenuItem_Click(object sender, EventArgs e)

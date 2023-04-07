@@ -271,6 +271,12 @@ namespace SpreadsheetEngine
             throw new NotImplementedException();
         }
 
+        public Type GetType()
+        {
+            CellCommand temp = this.commands.First();
+            return temp.GetType();
+        }
+
         public void Execute()
         {
             foreach (CellCommand command in this.commands)
@@ -332,6 +338,32 @@ namespace SpreadsheetEngine
                 command.Execute(null);
                 this.commandStack.Push(command);
             }
+        }
+
+        public string GetCommandType()
+        {
+            if (this.commandStack.Count > 0)
+            {
+                Type commandType = this.commandStack.Peek().GetType();
+
+                if (commandType == typeof(CellCommandGrouping))
+                {
+                    CellCommandGrouping topCommand = (CellCommandGrouping)this.commandStack.Peek();
+
+                    commandType = topCommand.GetType();
+                }
+
+                if (commandType == typeof(CellTextChangeCommand))
+                {
+                    return "Cell Text Changed";
+                }
+                else if (commandType == typeof(CellColorChangeCommand))
+                {
+                    return "Cell Color Changed";
+                }
+                // add more command types here as needed
+            }
+            return "No Command";
         }
 
     }
