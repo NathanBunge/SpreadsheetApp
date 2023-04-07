@@ -1,4 +1,8 @@
-﻿namespace SpreadsheetEngine
+﻿// <copyright file="ExpressionTree.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace SpreadsheetEngine
 {
     using System;
     using System.Collections.Generic;
@@ -11,20 +15,21 @@
     /// </summary>
     public partial class ExpressionTree
     {
-        private readonly ExpressionNode root;
         private static Dictionary<string, double> variableDict = new Dictionary<string, double>();
-        OperatorNodeFactory opFactory = new OperatorNodeFactory();
-        private static Func<string,double> variableLoopup;
-        
+        private static Func<string, double> variableLoopup;
+        private readonly ExpressionNode root;
+        private readonly OperatorNodeFactory opFactory = new OperatorNodeFactory();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpressionTree"/> class.
-        /// Constructor for expression tree.
+        /// Tree.
         /// </summary>
-        /// <param name="expression">expression to add.</param>
-        public ExpressionTree(string expression, Func<string,double> lookupFunction)
+        /// <param name="expression">string exspression in infix notation.</param>
+        /// <param name="lookupFunction">optional loopup cell funtion.</param>
+        public ExpressionTree(string expression, Func<string, double> lookupFunction)
         {
             variableLoopup = lookupFunction;
+
             // First clear variables
             this.ClearVariables();
 
@@ -72,8 +77,6 @@
             return true;
         }
 
-        
-
         /// <summary>
         /// sets variable name, adding to dict.
         /// </summary>
@@ -87,7 +90,7 @@
         /// <summary>
         /// Evaluate the tree.
         /// </summary>
-        /// <returns>value of evaluation</returns>
+        /// <returns>value of evaluationt.</returns>
         public double Evaluate()
         {
             return this.root.Evaluate();
@@ -102,7 +105,7 @@
             foreach (string token in tokens)
             {
                 // If token is numeric, just push it
-                if(double.TryParse(token, out double value))
+                if (double.TryParse(token, out double value))
                 {
                     stack.Push(new NumericNode(value));
                 }
@@ -124,7 +127,7 @@
                 {
                     ExpressionNode right = stack.Pop();
                     ExpressionNode left = stack.Pop();
-                    OperatorNode newNode = opFactory.CreateOperatorNode(operatorChar, left, right);
+                    OperatorNode newNode = this.opFactory.CreateOperatorNode(operatorChar, left, right);
                     stack.Push(newNode);
                 }
                 else
@@ -161,8 +164,9 @@
                     return new VariableNode(expression);
                 }
             }
+
             // Find first instance of oporation
-            int opIndex = opFactory.FindOperatorIndex(expression);
+            int opIndex = this.opFactory.FindOperatorIndex(expression);
             char op = expression[opIndex];
 
             // create left and rights sides
@@ -174,7 +178,7 @@
             ExpressionNode right = this.Compile(rightside);
 
             // Set the root to the oporator node using factory
-            ExpressionNode opNode = opFactory.CreateOperatorNode(op, left, right);
+            ExpressionNode opNode = this.opFactory.CreateOperatorNode(op, left, right);
 
             return opNode;
 
@@ -203,9 +207,7 @@
             // invalid oporaters
             throw new ArgumentException("Invalid operator: " + expression[1]);
             */
-
         }
-
 
         /// <summary>
         /// Base abstract class for nodes.
@@ -278,10 +280,7 @@
                 */
 
                 // else loopup in spreadsheet
-
                 return variableLoopup(this.variableName);
-
-                
             }
         }
 
@@ -290,10 +289,21 @@
         /// </summary>
         public abstract class OperatorNode : ExpressionNode
         {
+            private static char operatorType;
             private ExpressionNode left;
             private ExpressionNode right;
 
-            private static char operatorType;
+            /// <summary>
+            /// Initializes a new instance of the <see cref="OperatorNode"/> class.
+            /// Constructor.
+            /// </summary>
+            /// <param name="left">left node.</param>
+            /// <param name="right">right node.</param>
+            public OperatorNode(ExpressionNode left, ExpressionNode right)
+            {
+                this.left = left;
+                this.right = right;
+            }
 
             /// <summary>
             /// Gets for left node.
@@ -309,18 +319,6 @@
             protected ExpressionNode Right
             {
                 get { return this.right; }
-            }
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="OperatorNode"/> class.
-            /// Constructor
-            /// </summary>
-            /// <param name="left">left node.</param>
-            /// <param name="right">right node.</param>
-            public OperatorNode(ExpressionNode left, ExpressionNode right)
-            {
-                this.left = left;
-                this.right = right;
             }
         }
     }
