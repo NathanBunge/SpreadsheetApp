@@ -87,8 +87,8 @@
             this.spreadsheetGrid.RowHeadersWidth = 62;
             this.spreadsheetGrid.Size = new System.Drawing.Size(800, 417);
             this.spreadsheetGrid.TabIndex = 0;
-            this.spreadsheetGrid.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.spreadsheetGrid_CellBeginEdit);
-            this.spreadsheetGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.spreadsheetGrid_CellEndEdit);
+            this.spreadsheetGrid.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.SpreadsheetGrid_CellBeginEdit);
+            this.spreadsheetGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.SpreadsheetGrid_CellEndEdit);
             // 
             // colA
             // 
@@ -150,7 +150,7 @@
             this.undoRedoToolStripMenuItem.Name = "undoRedoToolStripMenuItem";
             this.undoRedoToolStripMenuItem.Size = new System.Drawing.Size(58, 29);
             this.undoRedoToolStripMenuItem.Text = "Edit";
-            this.undoRedoToolStripMenuItem.Click += new System.EventHandler(this.undoRedoToolStripMenuItem_Click);
+            this.undoRedoToolStripMenuItem.Click += new System.EventHandler(this.UndoRedoToolStripMenuItem_Click);
             // 
             // cellToolStripMenuItem
             // 
@@ -159,28 +159,28 @@
             this.cellToolStripMenuItem.Name = "cellToolStripMenuItem";
             this.cellToolStripMenuItem.Size = new System.Drawing.Size(56, 29);
             this.cellToolStripMenuItem.Text = "Cell";
-            this.cellToolStripMenuItem.Click += new System.EventHandler(this.cellToolStripMenuItem_Click);
+            this.cellToolStripMenuItem.Click += new System.EventHandler(this.CellToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(273, 34);
             this.toolStripMenuItem1.Text = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.ToolStripMenuItem1_Click);
             // 
             // undoToolStripMenuItem
             // 
             this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
             this.undoToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.undoToolStripMenuItem.Text = "Undo";
-            this.undoToolStripMenuItem.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
+            this.undoToolStripMenuItem.Click += new System.EventHandler(this.UndoToolStripMenuItem_Click);
             // 
             // redoToolStripMenuItem
             // 
             this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
             this.redoToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.redoToolStripMenuItem.Text = "Redo";
-            this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
+            this.redoToolStripMenuItem.Click += new System.EventHandler(this.RedoToolStripMenuItem_Click);
             // 
             // Form1
             // 

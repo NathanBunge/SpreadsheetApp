@@ -88,14 +88,24 @@ namespace SpreadsheetEngine
             return this.cellSheet[row, col];
         }
 
+        /// <summary>
+        /// Gets the cell reference.
+        /// </summary>
+        /// <param name="cellName">name of cell from string name.</param>
+        /// <returns>cell.</returns>
         public Cell GetCell(string cellName)
         {
-            int row=0;
+            int row = 0;
             int col = 0;
             this.GetCellIndex(cellName, ref row, ref col);
             return this.GetCell(row, col);
         }
 
+        /// <summary>
+        /// subscribes to a target cell.
+        /// </summary>
+        /// <param name="target">cell to subscribe to.</param>
+        /// <param name="source">cell that is subscribing.</param>
         public void SubscribeToCell(Cell target, Cell source)
         {
             target.PropertyChanged += (sender, e) =>
@@ -128,9 +138,9 @@ namespace SpreadsheetEngine
             if (e.PropertyName == "Text")
             {
                 Cell cell = (Cell)sender;
-                if(cell.Text == "")
+                if (cell.Text == string.Empty)
                 {
-                    cell.Value = "";
+                    cell.Value = string.Empty;
                 }
                 else if (cell.Text.First() == '=')
                 {
@@ -149,8 +159,8 @@ namespace SpreadsheetEngine
                     {
                         // If variable not found, just set to text
                         cell.Value = cell.Text;
+                        Console.WriteLine(ex.ToString());
                     }
-
 
                     // Get list of variables used
                     List<string> vs = this.GetVariables(expression);
@@ -178,17 +188,15 @@ namespace SpreadsheetEngine
             {
                 Console.WriteLine("Unkonwn cell property changed (maybe value?");
             }
-
-
         }
 
         /// <summary>
-        ///  should add saftly checks for this
+        ///  should add saftly checks for this.
         /// </summary>
-        /// <param name="cellName"></param>
-        /// <param name="col"></param>
-        /// <param name="row"></param>
-        /// <returns></returns>
+        /// <param name="cellName">Cell nice i.e. A1.</param>
+        /// <param name="row">row int to return.</param>
+        /// <param name="col">col int to return.</param>
+        /// <returns>True if found.</returns>
         private bool GetCellIndex(string cellName, ref int row, ref int col)
         {
             char colName = cellName[0];
@@ -243,202 +251,6 @@ namespace SpreadsheetEngine
                 : base(row, col)
             {
             }
-        }
-    }
-
-    public interface CellCommand : ICommand
-    {
-        void Execute();
-        void Undo();
-    }
-
-    public class CellCommandGrouping : CellCommand
-    {
-        private readonly List<CellCommand> commands;
-        public CellCommandGrouping()
-        {
-            this.commands = new List<CellCommand>();
-        }
-
-        public event EventHandler CanExecuteChanged;
-
-        public void AddCommand(CellCommand newCommand)
-        {
-            this.commands.Add(newCommand);
-        }
-        public bool CanExecute(object parameter)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Type GetType()
-        {
-            CellCommand temp = this.commands.First();
-            return temp.GetType();
-        }
-
-        public void Execute()
-        {
-            foreach (CellCommand command in this.commands)
-            {
-                command.Execute();
-            }
-        }
-
-        public void Execute(object parameter)
-        {
-            foreach (CellCommand command in this.commands)
-            {
-                command.Execute();
-            }
-        }
-
-        public void Undo()
-        {
-            foreach (CellCommand command in this.commands)
-            {
-                command.Undo();
-            }
-        }
-    }
-
-    public class CommandStack
-    {
-        private readonly Stack<CellCommand> commandStack;
-        private readonly Stack<CellCommand> undoStack;
-
-        public CommandStack()
-        {
-            this.commandStack = new Stack<CellCommand>();
-            this.undoStack = new Stack<CellCommand>();
-        }
-
-        public void ExecuteCommand(CellCommand newCommand)
-        {
-            this.commandStack.Push(newCommand);
-            newCommand.Execute(null);
-            this.undoStack.Clear();
-        }
-
-        public void UndoCommand()
-        {
-            if (this.commandStack.Count > 0)
-            {
-                CellCommand command = this.commandStack.Pop();
-                command.Undo();
-                this.undoStack.Push(command);
-            }
-        }
-
-        public void RedoCommand()
-        {
-            if (this.undoStack.Count > 0)
-            {
-                CellCommand command = this.undoStack.Pop();
-                command.Execute(null);
-                this.commandStack.Push(command);
-            }
-        }
-
-        public string GetCommandType()
-        {
-            if (this.commandStack.Count > 0)
-            {
-                Type commandType = this.commandStack.Peek().GetType();
-
-                if (commandType == typeof(CellCommandGrouping))
-                {
-                    CellCommandGrouping topCommand = (CellCommandGrouping)this.commandStack.Peek();
-
-                    commandType = topCommand.GetType();
-                }
-
-                if (commandType == typeof(CellTextChangeCommand))
-                {
-                    return "Cell Text Changed";
-                }
-                else if (commandType == typeof(CellColorChangeCommand))
-                {
-                    return "Cell Color Changed";
-                }
-                // add more command types here as needed
-            }
-            return "No Command";
-        }
-
-    }
-
-    public class CellTextChangeCommand : CellCommand
-    {
-        private Cell cell;
-        private string previousText;
-        private string newText;
-
-        public CellTextChangeCommand(Cell cell, string newText)
-        {
-            this.cell = cell;
-            this.previousText = cell.Text;
-            this.newText = newText;
-        }
-
-        // required for icommand
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Execute()
-        {
-            this.cell.Text = this.newText;
-        }
-
-        public void Execute(object parameter)
-        {
-            this.cell.Text = this.newText;
-        }
-
-        public void Undo()
-        {
-            this.cell.Text = this.previousText;
-        }
-    }
-
-    public class CellColorChangeCommand : CellCommand
-    {
-        private Cell cell;
-        private uint previousBGColor;
-        private uint newBGColor;
-
-        public CellColorChangeCommand(Cell cell, uint newBGColor)
-        {
-            this.cell = cell;
-            this.previousBGColor = cell.BGColor;
-            this.newBGColor = newBGColor;
-        }
-
-        // required for ICommand
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Execute()
-        {
-            this.cell.BGColor = this.newBGColor;
-        }
-
-        public void Execute(object parameter)
-        {
-            this.cell.BGColor = this.newBGColor;
-        }
-
-        public void Undo()
-        {
-            this.cell.BGColor = this.previousBGColor;
         }
     }
 }

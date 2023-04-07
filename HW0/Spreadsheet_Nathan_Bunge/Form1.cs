@@ -136,7 +136,7 @@ namespace Spreadsheet_Nathan_Bunge
             }
         }
 
-        private void spreadsheetGrid_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        private void SpreadsheetGrid_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             int row = e.RowIndex;
             int col = e.ColumnIndex;
@@ -144,11 +144,11 @@ namespace Spreadsheet_Nathan_Bunge
             this.spreadsheetGrid.Rows[row].Cells[col].Value = this.sheet.GetCell(row, col).Text;
         }
 
-        private void spreadsheetGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private void SpreadsheetGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             int row = e.RowIndex;
             int col = e.ColumnIndex;
-            Cell cell = this.sheet.GetCell(row,col);
+            Cell cell = this.sheet.GetCell(row, col);
             string newText = this.spreadsheetGrid.Rows[row].Cells[col].Value?.ToString();
 
             // Check if anything changed
@@ -161,24 +161,23 @@ namespace Spreadsheet_Nathan_Bunge
 
             if (newText == null)
             {
-                newText = "";
+                newText = string.Empty;
             }
 
             CellTextChangeCommand textChange = new CellTextChangeCommand(cell, newText);
             this.commandStack.ExecuteCommand(textChange);
         }
 
-        private void undoRedoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void UndoRedoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.undoToolStripMenuItem.Text = "Undo " + this.commandStack.GetCommandType();
         }
 
-        private void cellToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CellToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             ColorDialog cd1 = new ColorDialog();
             if (cd1.ShowDialog() == DialogResult.OK)
@@ -195,19 +194,18 @@ namespace Spreadsheet_Nathan_Bunge
                     // create command and execute
                     CellColorChangeCommand colorChange = new CellColorChangeCommand(cell, newColor);
                     colorCommandGroup.AddCommand(colorChange);
-                    
-                    //this.sheet.GetCell(row, col).BGColor = newColor;
                 }
+
                 this.commandStack.ExecuteCommand(colorCommandGroup);
             }
         }
 
-        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.commandStack.UndoCommand();
         }
 
-        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.commandStack.RedoCommand();
         }

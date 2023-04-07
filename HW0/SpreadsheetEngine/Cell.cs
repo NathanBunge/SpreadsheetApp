@@ -102,6 +102,9 @@ namespace SpreadsheetEngine
             }
         }
 
+        /// <summary>
+        /// Gets or sets color for cell.
+        /// </summary>
         public uint BGColor
         {
             get
