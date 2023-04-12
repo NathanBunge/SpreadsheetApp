@@ -21,6 +21,8 @@ namespace SpreadsheetEngine
         private RealCell[,] cellSheet;
         private int rowCount;
         private int colCount;
+        private Dictionary<Cell, List<Cell>> subscriptions = new Dictionary<Cell, List<Cell>>();
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Spreadsheet"/> class.
@@ -108,6 +110,12 @@ namespace SpreadsheetEngine
         /// <param name="source">cell that is subscribing.</param>
         public void SubscribeToCell(Cell target, Cell source)
         {
+            // check if the source cell is already subscribed to the target cell
+            if (this.subscriptions.ContainsKey(target) && this.subscriptions[target].Contains(source))
+            {
+                return; // source cell is already subscribed to the target cell, so return without subscribing again
+            }
+
             target.PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == "Value" || e.PropertyName == "Text")
@@ -117,6 +125,13 @@ namespace SpreadsheetEngine
                     source.Text = originalText;
                 }
             };
+
+            // add the source cell to the list of subscribed cells for the target cell
+            if (!this.subscriptions.ContainsKey(target))
+            {
+                this.subscriptions[target] = new List<Cell>();
+            }
+            this.subscriptions[target].Add(source);
         }
 
         private List<string> GetVariables(string inputString)
