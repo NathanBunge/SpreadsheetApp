@@ -9,6 +9,7 @@ namespace Spreadsheet_Nathan_Bunge
     using System.ComponentModel;
     using System.Data;
     using System.Drawing;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -208,6 +209,20 @@ namespace Spreadsheet_Nathan_Bunge
         private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.commandStack.RedoCommand();
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FileStream stream = new FileStream("spreadsheet.xml", FileMode.Create);
+            this.sheet.SaveToXml(stream);
+            stream.Close();
+        }
+
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FileStream stream = new FileStream("spreadsheet.xml", FileMode.Open);
+            this.sheet.LoadFromXml(stream);
+            stream.Close();
         }
     }
 }

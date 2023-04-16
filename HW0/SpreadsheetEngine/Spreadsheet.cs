@@ -7,11 +7,13 @@ namespace SpreadsheetEngine
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using System.Windows.Input;
+    using System.Xml.Linq;
 
     /// <summary>
     /// TODO.
@@ -99,7 +101,7 @@ namespace SpreadsheetEngine
         {
             int row = 0;
             int col = 0;
-            this.GetCellIndex(cellName, ref row, ref col);
+            this.GetCellIndex(cellName, out row, out col);
             return this.GetCell(row, col);
         }
 
@@ -132,6 +134,50 @@ namespace SpreadsheetEngine
                 this.subscriptions[target] = new List<Cell>();
             }
             this.subscriptions[target].Add(source);
+        }
+
+        public void SaveToXml(Stream stream)
+        {
+            XDocument doc = new XDocument(new XElement("spreadsheet"));
+            for (int row = 0; row < this.RowCount; row++)
+            {
+                for (int col = 0; col < this.ColCount; col++)
+                {
+                    RealCell cell = this.cellSheet[row, col] as RealCell;
+                    if (cell != null)
+                    {
+                        if (!string.IsNullOrEmpty(cell.Text) || cell.BGColor != 0xFFFFFFFF)
+                        {
+                            XElement cellElem = new XElement("cell",
+                            new XAttribute("name", this.GetCellName(row, col)),
+                            new XElement("bgcolor", cell.BGColor),
+                            new XElement("text", cell.Text));
+                            doc.Root.Add(cellElem);
+                        }
+                    }
+                }
+            }
+
+            doc.Save(stream);
+        }
+
+        public void LoadFromXml(Stream stream)
+        {
+            XDocument doc = XDocument.Load(stream);
+            foreach (XElement cellElem in doc.Root.Elements("cell"))
+            {
+                string name = cellElem.Attribute("name").Value;
+                Cell cell = this.GetCell(name);
+
+                if (cellElem.Element("bgcolor") != null)
+                {
+                    cell.BGColor = Convert.ToUInt32((string)cellElem.Element("bgcolor"));
+                }
+                if (cellElem.Element("text") != null)
+                {
+                    cell.Text = (string)cellElem.Element("text");
+                }
+            }
         }
 
         private List<string> GetVariables(string inputString)
@@ -207,12 +253,13 @@ namespace SpreadsheetEngine
 
         /// <summary>
         ///  should add saftly checks for this.
+        ///  Gets a cells numerical index given it's name
         /// </summary>
         /// <param name="cellName">Cell nice i.e. A1.</param>
         /// <param name="row">row int to return.</param>
         /// <param name="col">col int to return.</param>
         /// <returns>True if found.</returns>
-        private bool GetCellIndex(string cellName, ref int row, ref int col)
+        private bool GetCellIndex(string cellName, out int row, out int col)
         {
             char colName = cellName[0];
             string rowName = cellName.Substring(1);
@@ -232,6 +279,12 @@ namespace SpreadsheetEngine
             return true;
         }
 
+        /// <summary>
+        /// Gets a cell's value given it's name.
+        /// </summary>
+        /// <param name="cellName">string name.</param>
+        /// <returns>double the value if it has one</returns>
+        /// <exception cref="KeyNotFoundException">Exception for cells outside spreadsheet. </exception>
         private double GetCellValue(string cellName)
         {
             int rowIndex = 0;
@@ -239,7 +292,7 @@ namespace SpreadsheetEngine
             double cellValue = 0;
             try
             {
-                this.GetCellIndex(cellName, ref rowIndex, ref colIndex);
+                this.GetCellIndex(cellName, out rowIndex, out colIndex);
                 double.TryParse(this.cellSheet[rowIndex, colIndex].Value, out cellValue);
             }
             catch (KeyNotFoundException ex)
@@ -249,6 +302,39 @@ namespace SpreadsheetEngine
             }
 
             return cellValue;
+        }
+
+
+        /// <summary>
+        /// Basicllay inverse of GetCellIndex. Gets name from index. 
+        /// </summary>
+        /// <param name="row">row index.</param>
+        /// <param name="col">colum index. </param>
+        /// <returns>string cell name. </returns>
+        private string GetCellName(int row, int col)
+        {
+            if (row > this.RowCount || row < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(row));
+            }
+
+            if (col > this.ColCount || row < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(row));
+            }
+
+            StringBuilder cellName = new StringBuilder();
+
+            // Convert col index to a letter
+            char colLetter = (char)('A' + col);
+
+            // Convert row index to string representation
+            string rowLetter = (row + 1).ToString();
+
+            cellName.Append(colLetter);
+            cellName.Append(rowLetter);
+
+            return cellName.ToString();
         }
 
         /// <summary>
