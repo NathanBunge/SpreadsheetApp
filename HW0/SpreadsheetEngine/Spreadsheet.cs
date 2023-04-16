@@ -173,6 +173,7 @@ namespace SpreadsheetEngine
                 {
                     cell.BGColor = Convert.ToUInt32((string)cellElem.Element("bgcolor"));
                 }
+
                 if (cellElem.Element("text") != null)
                 {
                     cell.Text = (string)cellElem.Element("text");

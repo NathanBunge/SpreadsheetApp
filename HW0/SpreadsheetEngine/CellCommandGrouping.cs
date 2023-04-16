@@ -28,6 +28,7 @@ namespace SpreadsheetEngine
         /// Undo the command.
         /// </summary>
         void Undo();
+
     }
 
     /// <summary>
@@ -119,6 +120,12 @@ namespace SpreadsheetEngine
                 command.Execute(null);
                 this.commandStack.Push(command);
             }
+        }
+
+        public void ClearAllCommands()
+        {
+            this.commandStack.Clear();
+            this.undoStack.Clear();
         }
 
         public string GetCommandType()
