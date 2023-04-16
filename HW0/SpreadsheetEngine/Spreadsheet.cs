@@ -171,7 +171,14 @@ namespace SpreadsheetEngine
 
                 if (cellElem.Element("bgcolor") != null)
                 {
-                    cell.BGColor = Convert.ToUInt32((string)cellElem.Element("bgcolor"));
+                    try
+                    {
+                        cell.BGColor = Convert.ToUInt32((string)cellElem.Element("bgcolor"));
+                    }
+                    catch (FormatException)
+                    {
+                        cell.BGColor = 4294967040;
+                    }
                 }
 
                 if (cellElem.Element("text") != null)
