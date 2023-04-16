@@ -123,5 +123,15 @@ namespace SpreadsheetEngine
                 this.PropertyChanged(this, new PropertyChangedEventArgs("BGColor"));
             }
         }
+
+        /// <summary>
+        /// Resets cell to default values. 
+        /// </summary>
+        public void Reset()
+        {
+            this.Text = string.Empty;
+            this.Value = string.Empty;
+            this.BGColor = 0xFFFFFFFF;
+        }
     }
 }

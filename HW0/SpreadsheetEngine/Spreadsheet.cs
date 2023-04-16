@@ -181,6 +181,18 @@ namespace SpreadsheetEngine
             }
         }
 
+        public void ClearAllCells()
+        {
+            for (int row = 0; row < this.rowCount; row++)
+            {
+                for (int col = 0; col < this.ColCount; col++)
+                {
+                    Cell cell = this.GetCell(row, col);
+                    cell.Reset();
+                }
+            }
+        }
+
         private List<string> GetVariables(string inputString)
         {
             List<string> variables = new List<string>();

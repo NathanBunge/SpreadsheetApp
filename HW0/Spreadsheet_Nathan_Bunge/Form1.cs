@@ -171,7 +171,8 @@ namespace Spreadsheet_Nathan_Bunge
 
         private void UndoRedoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.undoToolStripMenuItem.Text = "Undo " + this.commandStack.GetCommandType();
+            this.undoToolStripMenuItem.Text = "Undo " + this.commandStack.GetUndoCommandType();
+            this.redoToolStripMenuItem.Text = "Redo " + this.commandStack.GetRedoCommandType();
         }
 
         private void CellToolStripMenuItem_Click(object sender, EventArgs e)
@@ -220,6 +221,10 @@ namespace Spreadsheet_Nathan_Bunge
 
         private void LoadToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // First reset form
+            this.sheet.ClearAllCells();
+
+            // Get file.
             FileStream stream = new FileStream("spreadsheet.xml", FileMode.Open);
             this.sheet.LoadFromXml(stream);
             stream.Close();

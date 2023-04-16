@@ -128,7 +128,7 @@ namespace SpreadsheetEngine
             this.undoStack.Clear();
         }
 
-        public string GetCommandType()
+        public string GetUndoCommandType()
         {
             if (this.commandStack.Count > 0)
             {
@@ -137,6 +137,32 @@ namespace SpreadsheetEngine
                 if (commandType == typeof(CellCommandGrouping))
                 {
                     CellCommandGrouping topCommand = (CellCommandGrouping)this.commandStack.Peek();
+
+                    commandType = topCommand.GetType();
+                }
+
+                if (commandType == typeof(CellTextChangeCommand))
+                {
+                    return "Cell Text Changed";
+                }
+                else if (commandType == typeof(CellColorChangeCommand))
+                {
+                    return "Cell Color Changed";
+                }
+                // add more command types here as needed
+            }
+            return "No Command";
+        }
+
+        public string GetRedoCommandType()
+        {
+            if (this.undoStack.Count > 0)
+            {
+                Type commandType = this.undoStack.Peek().GetType();
+
+                if (commandType == typeof(CellCommandGrouping))
+                {
+                    CellCommandGrouping topCommand = (CellCommandGrouping)this.undoStack.Peek();
 
                     commandType = topCommand.GetType();
                 }
