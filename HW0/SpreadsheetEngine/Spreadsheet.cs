@@ -79,14 +79,14 @@ namespace SpreadsheetEngine
         /// <returns>returns a cell.</returns>
         public Cell GetCell(int row, int col)
         {
-            if (row > this.RowCount || row < 0)
+            if (row >= this.RowCount || row < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(row));
+                throw new IndexOutOfRangeException(nameof(row));
             }
 
-            if (col > this.ColCount || row < 0)
+            if (col >= this.ColCount || row < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(row));
+                throw new IndexOutOfRangeException(nameof(row));
             }
 
             return this.cellSheet[row, col];
@@ -331,16 +331,16 @@ namespace SpreadsheetEngine
         /// <param name="row">row index.</param>
         /// <param name="col">colum index. </param>
         /// <returns>string cell name. </returns>
-        private string GetCellName(int row, int col)
+        public string GetCellName(int row, int col)
         {
-            if (row > this.RowCount || row < 0)
+            if (row >= this.RowCount || row < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(row));
+                throw new IndexOutOfRangeException(nameof(row));
             }
 
-            if (col > this.ColCount || row < 0)
+            if (col >= this.ColCount || row < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(row));
+                throw new IndexOutOfRangeException(nameof(row));
             }
 
             StringBuilder cellName = new StringBuilder();
