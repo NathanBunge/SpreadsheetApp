@@ -143,6 +143,12 @@ namespace SpreadsheetEngine
         /// <param name="source">cell that is subscribing.</param>
         public void SubscribeToCell(Cell target, Cell source)
         {
+            // Check for circular reference
+            if (HasCircularReference(source, target))
+            {
+                throw new ArgumentException("Circular reference detected.");
+            }
+
             // check if the source cell is already subscribed to the target cell
             if (this.subscriptions.ContainsKey(target) && this.subscriptions[target].Contains(source))
             {
@@ -181,6 +187,12 @@ namespace SpreadsheetEngine
             }
 
             visitedCells.Add(target);
+
+            if (!this.subscriptions.ContainsKey(target))
+            {
+                return false;
+            }
+
             foreach (var subscription in this.subscriptions[target])
             {
                 if (!visitedCells.Contains(subscription) && this.HasCircularReference(subscription, source, visitedCells))
@@ -300,24 +312,44 @@ namespace SpreadsheetEngine
                         // Make tree
                         ExpressionTree eTree = new ExpressionTree(expression, this.GetCellValue);
 
+                        // Get list of variables used
+                        List<string> vs = this.GetVariables(expression);
+
+                        // Subscribe to list of cells
+                        foreach (string v in vs)
+                        {
+                            this.SubscribeToCell(this.GetCell(v), cell);
+                        }
+
                         // set value of cell to evaluated expression
                         cell.Value = eTree.Evaluate().ToString();
                     }
                     catch (KeyNotFoundException ex)
                     {
-                        // If variable not found, just set to text
-                        cell.Value = cell.Text;
+                        // If variable not found, set error text
+                        cell.Value = "Cell not found";
                         Console.WriteLine(ex.ToString());
+                        this.SheetPropertyChanged(sender, new PropertyChangedEventArgs("CellChanged"));
+                        return;
                     }
-
-                    // Get list of variables used
-                    List<string> vs = this.GetVariables(expression);
-
-                    // Subscribe to list of cells
-                    foreach (string v in vs)
+                    catch (IndexOutOfRangeException ex)
                     {
-                        this.SubscribeToCell(this.GetCell(v), cell);
+                        // If variable not found, set error text
+                        cell.Value = "Cell out of range";
+                        Console.WriteLine(ex.ToString());
+                        this.SheetPropertyChanged(sender, new PropertyChangedEventArgs("CellChanged"));
+                        return;
                     }
+                    catch (ArgumentException ex)
+                    {
+                        // If variable not found, set error text
+                        cell.Value = "Circular reference found";
+                        Console.WriteLine(ex.ToString());
+                        this.SheetPropertyChanged(sender, new PropertyChangedEventArgs("CellChanged"));
+                        return;
+                    }
+
+
                 }
                 else
                 {
