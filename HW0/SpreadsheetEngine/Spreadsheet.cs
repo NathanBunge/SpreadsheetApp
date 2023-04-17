@@ -25,7 +25,6 @@ namespace SpreadsheetEngine
         private int colCount;
         private Dictionary<Cell, List<Cell>> subscriptions = new Dictionary<Cell, List<Cell>>();
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Spreadsheet"/> class.
         /// Speadsheet.
@@ -106,6 +105,38 @@ namespace SpreadsheetEngine
         }
 
         /// <summary>
+        /// Basicllay inverse of GetCellIndex. Gets name from index.
+        /// </summary>
+        /// <param name="row">row index.</param>
+        /// <param name="col">colum index. </param>
+        /// <returns>string cell name. </returns>
+        public string GetCellName(int row, int col)
+        {
+            if (row >= this.RowCount || row < 0)
+            {
+                throw new IndexOutOfRangeException(nameof(row));
+            }
+
+            if (col >= this.ColCount || row < 0)
+            {
+                throw new IndexOutOfRangeException(nameof(row));
+            }
+
+            StringBuilder cellName = new StringBuilder();
+
+            // Convert col index to a letter
+            char colLetter = (char)('A' + col);
+
+            // Convert row index to string representation
+            string rowLetter = (row + 1).ToString();
+
+            cellName.Append(colLetter);
+            cellName.Append(rowLetter);
+
+            return cellName.ToString();
+        }
+
+        /// <summary>
         /// subscribes to a target cell.
         /// </summary>
         /// <param name="target">cell to subscribe to.</param>
@@ -133,9 +164,14 @@ namespace SpreadsheetEngine
             {
                 this.subscriptions[target] = new List<Cell>();
             }
+
             this.subscriptions[target].Add(source);
         }
 
+        /// <summary>
+        /// Taakes s stream and creates an xml file to send to it.
+        /// </summary>
+        /// <param name="stream">stream to send created file to.</param>
         public void SaveToXml(Stream stream)
         {
             XDocument doc = new XDocument(new XElement("spreadsheet"));
@@ -148,10 +184,11 @@ namespace SpreadsheetEngine
                     {
                         if (!string.IsNullOrEmpty(cell.Text) || cell.BGColor != 0xFFFFFFFF)
                         {
-                            XElement cellElem = new XElement("cell",
-                            new XAttribute("name", this.GetCellName(row, col)),
-                            new XElement("bgcolor", cell.BGColor),
-                            new XElement("text", cell.Text));
+                            XElement cellElem = new XElement(
+                                "cell",
+                                new XAttribute("name", this.GetCellName(row, col)),
+                                new XElement("bgcolor", cell.BGColor),
+                                new XElement("text", cell.Text));
                             doc.Root.Add(cellElem);
                         }
                     }
@@ -161,6 +198,10 @@ namespace SpreadsheetEngine
             doc.Save(stream);
         }
 
+        /// <summary>
+        /// Loads information form an XML file from a given stream.
+        /// </summary>
+        /// <param name="stream">stream to load the xml file from.</param>
         public void LoadFromXml(Stream stream)
         {
             XDocument doc = XDocument.Load(stream);
@@ -188,6 +229,9 @@ namespace SpreadsheetEngine
             }
         }
 
+        /// <summary>
+        /// Clears each cell by resetsting it to it's default values.
+        /// </summary>
         public void ClearAllCells()
         {
             for (int row = 0; row < this.rowCount; row++)
@@ -273,7 +317,7 @@ namespace SpreadsheetEngine
 
         /// <summary>
         ///  should add saftly checks for this.
-        ///  Gets a cells numerical index given it's name
+        ///  Gets a cells numerical index given it's name.
         /// </summary>
         /// <param name="cellName">Cell nice i.e. A1.</param>
         /// <param name="row">row int to return.</param>
@@ -303,7 +347,7 @@ namespace SpreadsheetEngine
         /// Gets a cell's value given it's name.
         /// </summary>
         /// <param name="cellName">string name.</param>
-        /// <returns>double the value if it has one</returns>
+        /// <returns>double the value if it has one.</returns>
         /// <exception cref="KeyNotFoundException">Exception for cells outside spreadsheet. </exception>
         private double GetCellValue(string cellName)
         {
@@ -322,39 +366,6 @@ namespace SpreadsheetEngine
             }
 
             return cellValue;
-        }
-
-
-        /// <summary>
-        /// Basicllay inverse of GetCellIndex. Gets name from index. 
-        /// </summary>
-        /// <param name="row">row index.</param>
-        /// <param name="col">colum index. </param>
-        /// <returns>string cell name. </returns>
-        public string GetCellName(int row, int col)
-        {
-            if (row >= this.RowCount || row < 0)
-            {
-                throw new IndexOutOfRangeException(nameof(row));
-            }
-
-            if (col >= this.ColCount || row < 0)
-            {
-                throw new IndexOutOfRangeException(nameof(row));
-            }
-
-            StringBuilder cellName = new StringBuilder();
-
-            // Convert col index to a letter
-            char colLetter = (char)('A' + col);
-
-            // Convert row index to string representation
-            string rowLetter = (row + 1).ToString();
-
-            cellName.Append(colLetter);
-            cellName.Append(rowLetter);
-
-            return cellName.ToString();
         }
 
         /// <summary>
