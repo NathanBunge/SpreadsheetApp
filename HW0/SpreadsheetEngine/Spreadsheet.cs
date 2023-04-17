@@ -168,6 +168,29 @@ namespace SpreadsheetEngine
             this.subscriptions[target].Add(source);
         }
 
+        private bool HasCircularReference(Cell target, Cell source, HashSet<Cell> visitedCells = null)
+        {
+            if (visitedCells == null)
+            {
+                visitedCells = new HashSet<Cell>();
+            }
+
+            if (target == source)
+            {
+                return true;
+            }
+
+            visitedCells.Add(target);
+            foreach (var subscription in this.subscriptions[target])
+            {
+                if (!visitedCells.Contains(subscription) && this.HasCircularReference(subscription, source, visitedCells))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /// <summary>
         /// Taakes s stream and creates an xml file to send to it.
         /// </summary>
