@@ -143,6 +143,12 @@ namespace SpreadsheetEngine
         /// <param name="source">cell that is subscribing.</param>
         public void SubscribeToCell(Cell target, Cell source)
         {
+            // Check fir self reference
+            if (HasSelfReference(source, target))
+            {
+                throw new ArgumentException("Self reference detected.");
+            }
+
             // Check for circular reference
             if (HasCircularReference(source, target))
             {
@@ -172,6 +178,16 @@ namespace SpreadsheetEngine
             }
 
             this.subscriptions[target].Add(source);
+        }
+
+        private bool HasSelfReference(Cell target, Cell source)
+        {
+            if (target == source)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private bool HasCircularReference(Cell target, Cell source, HashSet<Cell> visitedCells = null)
@@ -343,7 +359,19 @@ namespace SpreadsheetEngine
                     catch (ArgumentException ex)
                     {
                         // If variable not found, set error text
-                        cell.Value = "Circular reference found";
+                        if (ex.Message.Contains("Circular reference"))
+                        {
+                            cell.Value = "!(Circular reference found)";
+                        }
+                        else if (ex.Message.Contains("Self reference"))
+                        {
+                            cell.Value = "!(Self reference found)";
+                        }
+                        else
+                        {
+                            cell.Value = ex.Message;
+                        }
+
                         Console.WriteLine(ex.ToString());
                         this.SheetPropertyChanged(sender, new PropertyChangedEventArgs("CellChanged"));
                         return;
