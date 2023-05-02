@@ -1,11 +1,13 @@
 # Spreadsheet Application
 
 ## Purpose:
-Building a Excel like spreadsheet application using GRASP and SOLID principals. Practice building on and adding to an applicatino over time, while keeping up with good design prnicals and practices.
+Building a Excel like spreadsheet application using GRASP design prniciples. Practice building on and adding to an application over time, while keeping up with good design patterns.
 
 ## Features:
-### Cells
-#### Text, Value, Color
+### Cell Data
+#### Text
+#### Value
+#### Color
 
 ### Exspression Tree
 #### Prefix/Postfix conversion
@@ -21,7 +23,11 @@ Building a Excel like spreadsheet application using GRASP and SOLID principals. 
 #### Cell equations
 #### Cell colors
 
-
-## SOLID principals
-
 ## GRASP patterns
+### Information exspert
+### Creator
+### Controllor 
+### Polymorphism
+### Protected variations
+
+## Unit Testing
