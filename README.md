@@ -13,10 +13,10 @@ Building a Excel like spreadsheet application using GRASP design prniciples. Pra
 
 ### Cell referencing
 Cells that start with "=" and have cell names inside the text string (i.e. A2 or C8) will have their value set to the referenced cell's value.
-#### Events Updating
-If a cell changes, all the cells that are referencing that cell will also update their values. This is done by subscribing to the cell's proterty changed event.
-#### Circular reference checking
-Cells that reference themselves or reference a cycle of cells will display an error text message to avoid circular references.
+
+**Events Updating:** If a cell changes, all the cells that are referencing that cell will also update their values. This is done by subscribing to the cell's proterty changed event.
+
+**Circular reference checking:** Cells that reference themselves or reference a cycle of cells will display an error text message to avoid circular references.
 
 
 ### Exspression Tree
