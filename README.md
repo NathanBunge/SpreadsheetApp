@@ -42,7 +42,9 @@ A class ICellCommand is a type of ICommand that keeps track of user changing cel
 
 ### Low Coupling
 
-## High Cohesion
+
+### High Cohesion
+Spreadsheet engine allows the form (ui) to handle user interaction, while all the calculations are happening in a different layer. In the same way, the Spreadsheet engine does not handle any user interaction. Futher classes, such as Expression tree, Shunning yards, operator factory, and more split up each responsibility and therefore increase the cohesion of each class.
 
 ### Polymorphism
 ### Protected Variations
