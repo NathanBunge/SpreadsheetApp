@@ -6,7 +6,9 @@ Building a Excel like spreadsheet application using GRASP design prniciples. Pra
 ## Features:
 ### Cell Data
 **Text:** users can enter text into a cell which will be saved when they press ENTER. 
+
 **Values:** Numerical Values are also stored for the cell. If the text starts with "=", then the value of the cell will be displayed.
+
 **Color:** Background color of each cell can be changed
 
 ### Cell referencing
