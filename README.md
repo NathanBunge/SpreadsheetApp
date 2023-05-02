@@ -1,5 +1,3 @@
-Here's the corrected text:
-
 # Spreadsheet Application
 
 ## Purpose:
