@@ -19,17 +19,16 @@ Cells that start with "=" and have cell names inside the text string (i.e. A2 or
 **Circular reference checking:** Cells that reference themselves or reference a cycle of cells will display an error text message to avoid circular references.
 
 
-### Exspression Tree
-For cell texts that have "=" and also include oporators such ad addition or subtraction, an exspression tree is built to calculate the value for those cells.
-#### Prefix/Postfix conversion
-Text strings that need exspression trees are first converted to prefix notation to ensure proper order of oporations in the expsression tree.
+### Cell Equations
+**Expression Tree:** For cell texts that have "=" and also include oporators such ad addition or subtraction, an exspression tree is built to calculate the value for those cells.
+
+**Prefix/Postfix conversion:** Text strings that need exspression trees are first converted to prefix notation to ensure proper order of oporations in the expsression tree.
 
 ### Undo/Redo
 All text anc color changes by the users are saved as commands. This allows the users to under or redo a command simply by calling the top command on the command stack.
 
 ### Saving to XML
-#### Cell equations
-#### Cell colors
+Users can click a button that saves all the cell data to an XML file, which can then be loaded to keep progress.
 
 ## GRASP patterns
 ### Information exspert
