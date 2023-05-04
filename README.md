@@ -34,20 +34,21 @@ Users can click a button that saves all the cell data to an XML file, which can 
 Each class only has methods and attributes related to that class. 
 
 ### Creator
-A factory class OperatorNodeFactory is part of the spreadsheet engine that is soley in charge of creating oporator nodes for the exspression tree. This allows the rest of the spreadsheet class (client) to be decoupled from the creation process. It also allows more oporators to be added to the application without having to change the rest of the spreadsheet engine class.
+A factory class OperatorNodeFactory is part of the spreadsheet engine that is solely in charge of creating operator nodes for the expression tree. This allows the rest of the spreadsheet class (client) to be decoupled from the creation process. It also allows more operators to be added to the application without having to change the rest of the spreadsheet engine class.
 
 
 ### Controller 
 A class ICellCommand is a type of ICommand that keeps track of user changing cell properties. CellTextChangeCommand and CellColorChangeCommand both inherit from this to keep track of Text and Color changes. A stack is made to keep track of commands that allow the Undo and Redo functionality.
 
-### Low Coupling
-
 
 ### High Cohesion
-Spreadsheet engine allows the form (ui) to handle user interaction, while all the calculations are happening in a different layer. In the same way, the Spreadsheet engine does not handle any user interaction. Futher classes, such as Expression tree, Shunning yards, operator factory, and more split up each responsibility and therefore increase the cohesion of each class.
+Spreadsheet engine allows the form (ui) to handle user interaction, while all the calculations are happening in a different layer. In the same way, the Spreadsheet engine does not handle any user interaction. Further classes, such as Expression tree, Shunting yard, operator factory, and more split up each responsibility and therefore increase the cohesion of each class.
 
 ### Polymorphism
+Operators all inherit from an interface Operator class. Command classes also inherit from ICommand class. This creates polymorphic variations.
+
 ### Protected Variations
-The Operator Factory uses reflection to search for availible oporators and builds the possible oprators that are avilible according to the options found. This allows for an very easy way to add different types of oporations in the future.
+The Operator Factory uses reflection to search for available operators and builds the possible operators that are available according to the options found. This allows for a very easy way to add different types of operations in the future.
 
 ### Pure fabrication
+Controller class and Operator Factory class are created to help lower coupling and increase cohesion.
