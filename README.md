@@ -31,7 +31,7 @@ Users can click a button that saves all the cell data to an XML file, which can 
 
 ## GRASP patterns
 ### Information Expert
-Each class only has methods and attributes related to that class. 
+Each class only has methods and attributes related to that class. For example, * *Cells* * keep values, text, and color, and * *SpreadSheet* * keeps track of groupings of cells.
 
 ### Creator
 A factory class OperatorNodeFactory is part of the spreadsheet engine that is solely in charge of creating operator nodes for the expression tree. This allows the rest of the spreadsheet class (client) to be decoupled from the creation process. It also allows more operators to be added to the application without having to change the rest of the spreadsheet engine class.
